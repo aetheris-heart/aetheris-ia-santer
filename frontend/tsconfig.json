@@ -1,0 +1,42 @@
+{
+  "extends": "./tsconfig.node.json",
+  "compilerOptions": {
+    /* Cible & modules */
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+
+    /* Plateforme */
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+
+    /* Rigueur */
+    "strict": true,
+    "noImplicitAny": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "useDefineForClassFields": true,
+
+    /* Ergonomie / compat */
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* Alias imports */
+    "baseUrl": "src",
+    "paths": {
+      "@/*": ["*"]
+    },
+
+    /* Types globaux côté client (Vite) */
+    "types": ["vite/client"]
+  },
+  "include": ["src", "vite-env.d.ts", "public/assets"],
+  "exclude": ["node_modules", "dist"]
+}

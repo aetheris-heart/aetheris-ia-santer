@@ -1,0 +1,51 @@
+{
+  // === Python / FastAPI ===
+  "python.analysis.extraPaths": ["."],
+  "python.analysis.diagnosticMode": "workspace",
+
+  // === Tailwind CSS ===
+  "css.lint.unknownAtRules": "ignore",      
+  "editor.quickSuggestions": {
+    "strings": true                         
+  },
+  "tailwindCSS.includeLanguages": {
+    "plaintext": "html",
+    "javascript": "javascript",
+    "javascriptreact": "javascript",
+    "typescript": "typescript",
+    "typescriptreact": "typescript"
+  },
+
+  // === React / TypeScript ===
+  "typescript.tsserver.experimental.enableProjectDiagnostics": true,
+  "javascript.suggest.autoImports": true,
+  "typescript.suggest.autoImports": true,
+
+  // === Prettier (formatage) ===
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  // === ESLint (linting auto) ===
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true,
+    "source.fixAll.eslint": true,
+    "source.organizeImports": true
+  },
+
+  // === Général UI ===
+  "editor.formatOnSave": true,
+  "files.eol": "\n",
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true
+}

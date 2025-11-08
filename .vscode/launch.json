@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "🚀 Lancer Uvicorn (FastAPI)",
+        "type": "debugpy",
+        "request": "launch",
+        "program": "${workspaceFolder}/main.py",
+        "args": [
+          "run",
+          "main:app",
+          "--reload",
+          "--env-file",
+          ".env"
+        ],
+        "console": "integratedTerminal",
+        "env": {
+          "PYTHONPATH": "${workspaceFolder}"
+        },
+        "justMyCode": true,
+        "module": "uvicorn"
+      }
+    ]
+  }
+  
