@@ -51,23 +51,31 @@ app = FastAPI(
 )
 
 # =============================
-# CORS — ⚙️ Correction complète
+# ⚙️ CORS — Configuration complète (local + Render)
 # =============================
+from fastapi.middleware.cors import CORSMiddleware
 
 origins = [
+    # 🌍 Environnements de développement
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "http://localhost:5173",       # pour React avec Vite
+    "http://localhost:5173",
     "http://127.0.0.1:5173",
+
+    # 🌐 Environnements de production (Render + autres)
+    "https://aetheris-ia-backend.onrender.com",   # backend Render (auto-autorisation)
+    "https://aetheris-ia-santer.onrender.com",    # frontend Render (React)
+    "https://aetheris.health",                    # ton futur domaine officiel
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,          # Domaines autorisés
+    allow_origins=origins,         # Domaines autorisés
     allow_credentials=True,
-    allow_methods=["*"],            # Toutes les méthodes (GET, POST, PUT, DELETE)
-    allow_headers=["*"],            # Tous les headers (Authorization, Content-Type…)
+    allow_methods=["*"],           # Autorise toutes les méthodes HTTP
+    allow_headers=["*"],           # Autorise tous les headers
 )
+
 
 
 

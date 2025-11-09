@@ -1,8 +1,9 @@
 import axios, { AxiosError } from "axios";
 
-// 🌍 Définition dynamique du backend (priorité à .env)
+// 🌍 Base URL dynamique : priorité à .env sinon fallback vers Render Cloud
 const BASE_URL =
-  (import.meta as any).env?.VITE_API_URL?.replace(/\/$/, "") || "http://127.0.0.1:8000";
+  (import.meta as any).env?.VITE_API_URL?.replace(/\/$/, "") ||
+  "https://aetheris-ia-backend.onrender.com"; // ✅ Backend Render officiel
 
 // 🔐 Clé utilisée pour stocker le token JWT
 const ACCESS_KEY = "token";
@@ -25,11 +26,11 @@ export function setAccessToken(token: string | null): void {
 }
 
 // ======================================================
-// ⚙️ Configuration de l’instance Axios principale
+// ⚙️ Configuration principale Axios
 // ======================================================
 const api = axios.create({
   baseURL: BASE_URL,
-  timeout: 60000, // ⏱️ 60 secondes (Aetheris peut analyser longuement)
+  timeout: 60000, // ⏱️ 60 secondes (analyse IA longue)
   withCredentials: false,
   headers: {
     "Content-Type": "application/json",
@@ -38,7 +39,7 @@ const api = axios.create({
 });
 
 // ======================================================
-// 🚀 Intercepteur : Ajout automatique du token
+// 🚀 Intercepteur — ajout automatique du token JWT
 // ======================================================
 api.interceptors.request.use((config) => {
   const token = getAccessToken();
@@ -49,7 +50,7 @@ api.interceptors.request.use((config) => {
 });
 
 // ======================================================
-// 🧩 Intercepteur : Gestion centralisée des erreurs
+// 🧩 Intercepteur — gestion centralisée des erreurs
 // ======================================================
 api.interceptors.response.use(
   (response) => response,
