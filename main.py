@@ -13,18 +13,19 @@ app = FastAPI(
 )
 
 # ============================================================
-# ⚙️ CORS — Configuration universelle (Render + Vercel)
+# ⚙️ CORS — Sécurisé (Render + Vercel + Domaine officiel)
 # ============================================================
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi import FastAPI
 
-app = FastAPI(title="Aetheris IA Santé")
+origins = [
+    "https://aetheris-frontend-cmxmtmr6p-ateba-ramses-projects.vercel.app",  # Frontend Vercel
+    "https://aetheris.health",  # Domaine officiel à venir
+    "https://www.aetheris.health",
+]
 
-# ✅ Autorise temporairement toutes les origines (test de production)
-# On resserrera ensuite quand tout fonctionne.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],        # autorise tout
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
