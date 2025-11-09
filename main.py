@@ -3,6 +3,35 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from dotenv import load_dotenv
 import os
+# =============================
+# Initialisation de l'app
+# =============================
+app = FastAPI(
+    title="Aetheris IA Santé",
+    description="Plateforme médicale intelligente - API",
+    version="2.0.0",
+)
+
+# ============================================================
+# ⚙️ CORS — Configuration universelle (Render + Vercel)
+# ============================================================
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI
+
+app = FastAPI(title="Aetheris IA Santé")
+
+# ✅ Autorise temporairement toutes les origines (test de production)
+# On resserrera ensuite quand tout fonctionne.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],        # autorise tout
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+
 # Import DB
 from api.database import Base, engine, SessionLocal
 from app import models  # ✅ charge tous les modèles via app/models/__init__.py
@@ -41,40 +70,8 @@ from api.routes import user
 from api.routes import analyse_ia
 from api.routes import aetheris_chat
 
-# =============================
-# Initialisation de l'app
-# =============================
-app = FastAPI(
-    title="Aetheris IA Santé",
-    description="Plateforme médicale intelligente - API",
-    version="2.0.0",
-)
 
-# =============================
-# ⚙️ CORS — Configuration complète (local + Render)
-# =============================
-from fastapi.middleware.cors import CORSMiddleware
 
-origins = [
-    # 🌍 Environnements de développement
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-
-    # 🌐 Environnements de production (Render + autres)
-    "https://aetheris-ia-backend.onrender.com",   # backend Render (auto-autorisation)
-    "https://aetheris-ia-santer.onrender.com",    # frontend Render (React)
-    "https://aetheris.health",                    # ton futur domaine officiel
-]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,         # Domaines autorisés
-    allow_credentials=True,
-    allow_methods=["*"],           # Autorise toutes les méthodes HTTP
-    allow_headers=["*"],           # Autorise tous les headers
-)
 
 
 
