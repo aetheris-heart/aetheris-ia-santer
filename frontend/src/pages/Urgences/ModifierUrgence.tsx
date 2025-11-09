@@ -109,71 +109,84 @@ const ModifierUrgence: React.FC = () => {
         </div>
 
         {/* ⚠️ Détails médicaux */}
-        <div>
-          <h2 className="text-lg font-semibold mb-3 flex items-center gap-2 text-gray-700 dark:text-gray-200">
-            <AlertTriangle className="text-red-500 w-5 h-5" /> Détails de l’urgence
-          </h2>
-          <div className="grid md:grid-cols-2 gap-4">
-            <select
-              value={urgence.niveau_gravite}
-              onChange={(e) => setUrgence({ ...urgence, niveau_gravite: e.target.value })}
-              className="input-style"
-            >
-              <option>Faible</option>
-              <option>Modérée</option>
-              <option>Critique</option>
-            </select>
+<div>
+  <h2 className="text-lg font-semibold mb-3 flex items-center gap-2 text-gray-700 dark:text-gray-200">
+    <AlertTriangle className="text-red-500 w-5 h-5" /> Détails de l’urgence
+  </h2>
+  <div className="grid md:grid-cols-2 gap-4">
+    {/* 🔹 Niveau de gravité */}
+    <label htmlFor="niveau_gravite" className="sr-only">Niveau de gravité</label>
+    <select
+      id="niveau_gravite"
+      value={urgence.niveau_gravite}
+      onChange={(e) => setUrgence({ ...urgence, niveau_gravite: e.target.value })}
+      aria-label="Niveau de gravité"
+      className="input-style"
+    >
+      <option>Faible</option>
+      <option>Modérée</option>
+      <option>Critique</option>
+    </select>
 
-            <select
-              value={urgence.statut}
-              onChange={(e) => setUrgence({ ...urgence, statut: e.target.value })}
-              className="input-style"
-            >
-              <option>En attente</option>
-              <option>En cours</option>
-              <option>Pris en charge</option>
-              <option>Résolue</option>
-            </select>
-          </div>
+    {/* 🔹 Statut */}
+    <label htmlFor="statut" className="sr-only">Statut de l’urgence</label>
+    <select
+      id="statut"
+      value={urgence.statut}
+      onChange={(e) => setUrgence({ ...urgence, statut: e.target.value })}
+      aria-label="Statut de l’urgence"
+      className="input-style"
+    >
+      <option>En attente</option>
+      <option>En cours</option>
+      <option>Pris en charge</option>
+      <option>Résolue</option>
+    </select>
+  </div>
 
-          <textarea
-            value={urgence.description || ""}
-            onChange={(e) => setUrgence({ ...urgence, description: e.target.value })}
-            placeholder="Description de l’urgence"
-            className="input-style w-full mt-3"
-            rows={3}
-          />
-        </div>
+  <textarea
+    value={urgence.description || ""}
+    onChange={(e) => setUrgence({ ...urgence, description: e.target.value })}
+    placeholder="Description de l’urgence"
+    className="input-style w-full mt-3"
+    rows={3}
+  />
+</div>
 
-        {/* 🚑 Logistique */}
-        <div>
-          <h2 className="text-lg font-semibold mb-3 flex items-center gap-2 text-gray-700 dark:text-gray-200">
-            <Ambulance className="text-emerald-500 w-5 h-5" /> Logistique
-          </h2>
-          <div className="grid md:grid-cols-2 gap-4">
-            <input
-              value={urgence.equipe || ""}
-              onChange={(e) => setUrgence({ ...urgence, equipe: e.target.value })}
-              placeholder="Équipe d’intervention"
-              className="input-style"
-            />
-            <input
-              value={urgence.lieu || ""}
-              onChange={(e) => setUrgence({ ...urgence, lieu: e.target.value })}
-              placeholder="Lieu d’intervention"
-              className="input-style"
-            />
-            <select
-              value={urgence.moyen_transport || ""}
-              onChange={(e) => setUrgence({ ...urgence, moyen_transport: e.target.value })}
-              className="input-style"
-            >
-              <option>Ambulance</option>
-              <option>Hélicoptère</option>
-              <option>Autre</option>
-            </select>
-          </div>
-        </div>
+{/* 🚑 Logistique */}
+<div>
+  <h2 className="text-lg font-semibold mb-3 flex items-center gap-2 text-gray-700 dark:text-gray-200">
+    <Ambulance className="text-emerald-500 w-5 h-5" /> Logistique
+  </h2>
+  <div className="grid md:grid-cols-2 gap-4">
+    <input
+      value={urgence.equipe || ""}
+      onChange={(e) => setUrgence({ ...urgence, equipe: e.target.value })}
+      placeholder="Équipe d’intervention"
+      className="input-style"
+    />
+    <input
+      value={urgence.lieu || ""}
+      onChange={(e) => setUrgence({ ...urgence, lieu: e.target.value })}
+      placeholder="Lieu d’intervention"
+      className="input-style"
+    />
+
+    {/* 🔹 Moyen de transport */}
+    <label htmlFor="moyen_transport" className="sr-only">Moyen de transport</label>
+    <select
+      id="moyen_transport"
+      value={urgence.moyen_transport || ""}
+      onChange={(e) => setUrgence({ ...urgence, moyen_transport: e.target.value })}
+      aria-label="Moyen de transport"
+      className="input-style"
+    >
+      <option>Ambulance</option>
+      <option>Hélicoptère</option>
+      <option>Autre</option>
+    </select>
+  </div>
+</div>
 
         {/* 🧠 Analyse IA */}
         <div>

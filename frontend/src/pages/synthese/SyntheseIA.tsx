@@ -25,7 +25,7 @@ interface SyntheseIAData {
   risques?: string;
   score_global?: number;
   niveau_gravite?: string;
-  tags?: string[];
+  tags?: string | string[] | null;
   alertes_critiques?: string;
   anomalies_detectees?: string;
   recommandations_ia?: { type: string; message: string }[];
@@ -176,27 +176,31 @@ const SyntheseIA: React.FC = () => {
         </motion.div>
 
         {/* Recommandations IA */}
-        <motion.div
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6 }}
-          className="bg-green-900/30 p-5 rounded-2xl shadow-xl border border-green-700/30"
-        >
-          <h2 className="flex items-center gap-2 text-xl font-semibold text-green-400">
-            <Sparkles /> Recommandations IA
-          </h2>
-          <ul className="mt-3 list-disc pl-5 space-y-2 text-sm text-gray-200">
-            {Array.isArray(data.recommandations_ia) && data.recommandations_ia.length > 0 ? (
-              data.recommandations_ia.map((r, idx) => (
-                <li key={idx} className="cursor-pointer hover:text-green-300 transition-all">
-                  [{r.type}] {r.message}
-                </li>
-              ))
-            ) : (
-              <p className="text-gray-400 italic">Aucune recommandation disponible.</p>
-            )}
-          </ul>
-        </motion.div>
+<motion.div
+  initial={{ opacity: 0, x: 50 }}
+  animate={{ opacity: 1, x: 0 }}
+  transition={{ duration: 0.6 }}
+  className="bg-green-900/30 p-5 rounded-2xl shadow-xl border border-green-700/30"
+>
+  <h2 className="flex items-center gap-2 text-xl font-semibold text-green-400">
+    <Sparkles /> Recommandations IA
+  </h2>
+
+  {/* ✅ Liste correctement structurée */}
+  <ul className="mt-3 list-disc pl-5 space-y-2 text-sm text-gray-200">
+    {Array.isArray(data.recommandations_ia) && data.recommandations_ia.length > 0 ? (
+      data.recommandations_ia.map((r, idx) => (
+        <li key={idx} className="cursor-pointer hover:text-green-300 transition-all">
+          [{r.type}] {r.message}
+        </li>
+      ))
+    ) : (
+      <li className="text-gray-400 italic list-none">
+        Aucune recommandation disponible.
+      </li>
+    )}
+  </ul>
+</motion.div>
       </div>
 
       {/* --- Graphique évolution du score --- */}
@@ -234,7 +238,7 @@ const SyntheseIA: React.FC = () => {
       <div className="mt-12 text-center">
         {tags.length > 0 && (
           <div className="mb-6 flex flex-wrap justify-center gap-2">
-            {tags.map((t, idx) => (
+            {tags.map((t: string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | null | undefined, idx: React.Key | null | undefined) => (
               <span
                 key={idx}
                 className="px-3 py-1 text-xs bg-teal-700/30 border border-teal-500/40 rounded-full"

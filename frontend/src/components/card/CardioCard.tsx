@@ -5,6 +5,7 @@ import { HeartPulse, AlertCircle } from "lucide-react";
 import { Card, CardContent } from "@/components/uui/ui_card";
 import { useUser } from "@/context/UserContext";
 import api from "@/components/lib/axios";
+import axios from "axios";
 
 interface Props {
   patientId?: number;
@@ -28,35 +29,40 @@ const CardioCard: React.FC<Props> = ({ patientId = 1 }) => {
 
   // 🔁 Récupération automatique des données cardiaques
   useEffect(() => {
-    if (!token) return;
+  if (!token) return;
 
-    const fetchCardiaque = async () => {
-      if (!patientId) {
-        console.warn("⚠️ patientId non défini pour CardioCard");
-        return;
-      }
+  const fetchCardiaque = async (): Promise<void> => {
+    if (!patientId) {
+      console.warn("⚠️ patientId non défini pour CardioCard");
+      return;
+    }
 
-      try {
-        const res = await api.get<CardiaqueData>(`/cardiaque/${patientId}/latest`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        console.log("✅ Données cardiaques :", res.data);
-        setData(res.data);
-      } catch (error: any) {
+    try {
+      const res = await api.get<CardiaqueData>(`/cardiaque/${patientId}/latest`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      console.log("✅ Données cardiaques :", res.data);
+      setData(res.data);
+    } catch (error) {
+      // ✅ Typage strict de l'erreur Axios
+      if (axios.isAxiosError(error)) {
         console.error(
           "❌ Erreur récupération données cardiaques :",
-          error?.response?.data || error
+          error.response?.data || error.message
         );
-        setData(null);
-      } finally {
-        setLoading(false);
+      } else {
+        console.error("❌ Erreur inattendue :", error);
       }
-    };
 
-    fetchCardiaque();
-    const interval = setInterval(fetchCardiaque, 15000);
-    return () => clearInterval(interval);
-  }, [token, patientId]);
+      setData(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchCardiaque();
+}, [token, patientId]);
+
 
   // 🩺 Navigation vers la page Cardiaque détaillée
   const handleClick = () => {

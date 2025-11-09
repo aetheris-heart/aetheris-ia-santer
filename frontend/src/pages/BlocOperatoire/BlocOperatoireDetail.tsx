@@ -5,6 +5,7 @@ import api from "@/components/lib/axios";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { FaArrowLeft, FaEdit, FaHeartbeat, FaRobot } from "react-icons/fa";
+import axios from "axios";
 
 interface BlocOperatoire {
   id: number;

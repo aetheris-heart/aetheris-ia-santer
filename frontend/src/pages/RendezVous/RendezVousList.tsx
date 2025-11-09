@@ -82,26 +82,36 @@ const RendezVousList: React.FC = () => {
         className="max-w-6xl mx-auto bg-white/70 dark:bg-gray-900/60 backdrop-blur-xl border border-gray-300 dark:border-gray-700 rounded-2xl shadow-2xl p-6"
       >
         {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
-          <div className="flex items-center gap-3">
-            <CalendarDays className="text-yellow-500 w-8 h-8" />
-            <h1 className="text-3xl font-extrabold text-gray-800 dark:text-yellow-400">
-              Liste des Rendez-vous
-            </h1>
-          </div>
+<div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+  <div className="flex items-center gap-3">
+    <CalendarDays className="text-yellow-500 w-8 h-8" />
+    <h1 className="text-3xl font-extrabold text-gray-800 dark:text-yellow-400">
+      Liste des Rendez-vous
+    </h1>
+  </div>
 
-          <div className="flex gap-3">
-            <select
-              value={filter}
-              onChange={(e) => setFilter(e.target.value)}
-              className="p-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white/60 dark:bg-gray-800/70 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-yellow-500"
-            >
-              <option value="tous">Tous</option>
-              <option value="planifié">Planifié</option>
-              <option value="confirmé">Confirmé</option>
-              <option value="terminé">Terminé</option>
-              <option value="annulé">Annulé</option>
-            </select>
+  <div className="flex gap-3 items-center">
+    {/* 🧠 Label invisible pour accessibilité */}
+    <label
+      htmlFor="filtre_rendezvous"
+      className="sr-only"
+    >
+      Filtrer les rendez-vous par statut
+    </label>
+
+    <select
+      id="filtre_rendezvous" // ✅ identifiant lié au label
+      value={filter}
+      onChange={(e) => setFilter(e.target.value)}
+      aria-label="Filtrer les rendez-vous par statut" // ✅ double sécurité
+      className="p-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white/60 dark:bg-gray-800/70 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-yellow-500"
+    >
+      <option value="tous">Tous</option>
+      <option value="planifié">Planifié</option>
+      <option value="confirmé">Confirmé</option>
+      <option value="terminé">Terminé</option>
+      <option value="annulé">Annulé</option>
+    </select>
 
             <button
               onClick={fetchRendezvous}
@@ -177,25 +187,37 @@ const RendezVousList: React.FC = () => {
                       </span>
                     </td>
                     <td className="p-3 text-right space-x-2">
-                      <button
-                        onClick={() => navigate(`/rendezvous/${r.id}`)}
-                        className="text-blue-500 hover:text-blue-400"
-                      >
-                        <NotebookPen className="w-5 h-5" />
-                      </button>
-                      <button
-                        onClick={() => navigate(`/rendezvous/modifier/${r.id}`)}
-                        className="text-yellow-500 hover:text-yellow-400"
-                      >
-                        <Edit3 className="w-5 h-5" />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(r.id)}
-                        className="text-red-600 hover:text-red-500"
-                      >
-                        <Trash2 className="w-5 h-5" />
-                      </button>
-                    </td>
+  {/* 🧾 Voir détails */}
+  <button
+    onClick={() => navigate(`/rendezvous/${r.id}`)}
+    aria-label={`Voir les détails du rendez-vous #${r.id}`}
+    title={`Voir les détails du rendez-vous`}
+    className="text-blue-500 hover:text-blue-400 transition transform hover:scale-110"
+  >
+    <NotebookPen className="w-5 h-5" aria-hidden="true" />
+  </button>
+
+  {/* ✏️ Modifier */}
+  <button
+    onClick={() => navigate(`/rendezvous/modifier/${r.id}`)}
+    aria-label={`Modifier le rendez-vous #${r.id}`}
+    title={`Modifier le rendez-vous`}
+    className="text-yellow-500 hover:text-yellow-400 transition transform hover:scale-110"
+  >
+    <Edit3 className="w-5 h-5" aria-hidden="true" />
+  </button>
+
+  {/* 🗑️ Supprimer */}
+  <button
+    onClick={() => handleDelete(r.id)}
+    aria-label={`Supprimer le rendez-vous #${r.id}`}
+    title={`Supprimer le rendez-vous`}
+    className="text-red-600 hover:text-red-500 transition transform hover:scale-110"
+  >
+    <Trash2 className="w-5 h-5" aria-hidden="true" />
+  </button>
+</td>
+
                   </tr>
                 ))}
               </tbody>

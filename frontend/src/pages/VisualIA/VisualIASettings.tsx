@@ -193,21 +193,30 @@ const VisualIASettings: React.FC = () => {
         </div>
 
         {/* ⏱️ Fréquence d’analyse */}
-        <div>
-          <h2 className="font-semibold text-lg mb-2 text-white">
-            ⏱️ Fréquence d’analyse automatique
-          </h2>
-          <select
-            value={refreshInterval}
-            onChange={(e) => setRefreshInterval(parseInt(e.target.value))}
-            className="w-full bg-white/10 border border-white/20 text-gray-100 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-cyan-500"
-          >
-            <option value={10}>Toutes les 10 secondes</option>
-            <option value={15}>Toutes les 15 secondes</option>
-            <option value={30}>Toutes les 30 secondes</option>
-            <option value={60}>Toutes les 60 secondes</option>
-          </select>
-        </div>
+<div>
+  <h2 className="font-semibold text-lg mb-2 text-white">
+    ⏱️ Fréquence d’analyse automatique
+  </h2>
+
+  {/* ✅ Label invisible pour accessibilité */}
+  <label htmlFor="refresh_interval" className="sr-only">
+    Choisir la fréquence d’analyse automatique
+  </label>
+
+  <select
+    id="refresh_interval" // ✅ identifiant lié au label
+    value={refreshInterval}
+    onChange={(e) => setRefreshInterval(parseInt(e.target.value))}
+    aria-label="Fréquence d’analyse automatique" // ✅ nom accessible explicite
+    className="w-full bg-white/10 border border-white/20 text-gray-100 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+  >
+    <option value={10}>Toutes les 10 secondes</option>
+    <option value={15}>Toutes les 15 secondes</option>
+    <option value={30}>Toutes les 30 secondes</option>
+    <option value={60}>Toutes les 60 secondes</option>
+  </select>
+</div>
+
 
         {/* 🌙 Mode visuel */}
         <div className="flex items-center justify-between border-t border-white/10 pt-6">

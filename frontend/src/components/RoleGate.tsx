@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { useAuth } from "@/context/AuthContext";
+import { useUser } from "@/context/UserContext"; // ✅ Remplacement correct
 
 /** Adapte ici si tu as plus de rôles */
 export type Role = "admin" | "medecin" | "infirmier";
@@ -9,15 +9,17 @@ export type Role = "admin" | "medecin" | "infirmier";
 function checkRoles(userRole: string | undefined, required: Role[], requireAll: boolean) {
   if (!userRole) return false;
   if (required.length === 0) return true;
-  return requireAll ? required.every((r) => r === userRole) : required.some((r) => r === userRole);
+  return requireAll
+    ? required.every((r) => r === userRole)
+    : required.some((r) => r === userRole);
 }
 
 type RoleGateProps = {
   /** Un seul rôle ou plusieurs */
   allow: Role | Role[];
-  /** Exiger que *tous* les rôles listés matchent (rare). Par défaut: au moins un. */
+  /** Exiger que *tous* les rôles listés matchent (rare). Par défaut : au moins un. */
   requireAll?: boolean;
-  /** Que faire si non autorisé: "redirect" (par défaut), "fallback" ou "null" */
+  /** Que faire si non autorisé : "redirect" (par défaut), "fallback" ou "null" */
   whenUnauthorized?: "redirect" | "fallback" | "null";
   /** Chemin de redirection si non autorisé (par défaut /403) */
   to?: string;
@@ -38,7 +40,7 @@ export default function RoleGate({
   loadingFallback = <div className="p-4">Chargement…</div>,
   children,
 }: RoleGateProps) {
-  const { user, loading } = useAuth();
+  const { user, loading } = useUser(); // ✅ utilisation correcte
   const loc = useLocation();
 
   if (loading) return <>{loadingFallback}</>;
@@ -59,7 +61,7 @@ export default function RoleGate({
 
 /** Petit helper réutilisable si besoin ailleurs */
 export function useHasRole(allow: Role | Role[], requireAll = false) {
-  const { user } = useAuth();
+  const { user } = useUser(); // ✅ même logique
   const ok = checkRoles(user?.role, Array.isArray(allow) ? allow : [allow], requireAll);
   return ok;
 }

@@ -50,20 +50,30 @@ const VisualIACreate: React.FC = () => {
             className="w-full p-3 rounded-lg bg-white/10 border border-white/20 focus:border-cyan-500 outline-none"
             required
           />
-          <select
-            value={form.domaine}
-            onChange={(e) => setForm({ ...form, domaine: e.target.value })}
-            className="w-full p-3 rounded-lg bg-white/10 border border-white/20 focus:border-cyan-500 outline-none"
-            required
-          >
-            <option value="">Choisir un domaine</option>
-            <option value="radiologie">Radiologie</option>
-            <option value="neurologique">Neurologie</option>
-            <option value="digestive">Digestive</option>
-            <option value="cardiaque">Cardiaque</option>
-            <option value="metabolique">Métabolique</option>
-            <option value="renale">Rénale</option>
-          </select>
+          <label
+  htmlFor="domaine"
+  className="block text-sm font-medium mb-1 text-gray-200"
+>
+  Domaine d’analyse
+</label>
+
+<select
+  id="domaine" // ✅ identifiant lié au label
+  value={form.domaine}
+  onChange={(e) => setForm({ ...form, domaine: e.target.value })}
+  aria-label="Domaine d’analyse IA" // ✅ nom accessible additionnel
+  className="w-full p-3 rounded-lg bg-white/10 border border-white/20 focus:border-cyan-500 outline-none text-white"
+  required
+>
+  <option value="">Choisir un domaine</option>
+  <option value="radiologie">Radiologie</option>
+  <option value="neurologique">Neurologie</option>
+  <option value="digestive">Digestive</option>
+  <option value="cardiaque">Cardiaque</option>
+  <option value="metabolique">Métabolique</option>
+  <option value="renale">Rénale</option>
+</select>
+
           <input
             type="file"
             onChange={(e) => setForm({ ...form, file: e.target.files?.[0] || null })}

@@ -45,7 +45,7 @@ const ModifierAmbulance: React.FC = () => {
         });
         const a = res.data;
         setImmatriculation(a.immatriculation);
-        setEtat(a.etat);
+        setEtat(a.etat || "Disponible");
         setChauffeur(a.chauffeur || "");
         setEquipe(a.equipe || "");
         setLatitude(a.latitude?.toString() || "");
@@ -106,6 +106,7 @@ const ModifierAmbulance: React.FC = () => {
         {/* Immatriculation */}
         <Field
           icon={<Bus className="text-blue-500" />}
+          label="Immatriculation"
           placeholder="Immatriculation"
           value={immatriculation}
           onChange={setImmatriculation}
@@ -115,6 +116,7 @@ const ModifierAmbulance: React.FC = () => {
         {/* Chauffeur */}
         <Field
           icon={<User className="text-purple-500" />}
+          label="Chauffeur"
           placeholder="Nom du chauffeur"
           value={chauffeur}
           onChange={setChauffeur}
@@ -123,6 +125,7 @@ const ModifierAmbulance: React.FC = () => {
         {/* Équipe */}
         <Field
           icon={<Users className="text-green-500" />}
+          label="Équipe"
           placeholder="Équipe"
           value={equipe}
           onChange={setEquipe}
@@ -132,6 +135,7 @@ const ModifierAmbulance: React.FC = () => {
         <div className="grid grid-cols-2 gap-3">
           <Field
             icon={<MapPin className="text-pink-500" />}
+            label="Latitude"
             placeholder="Latitude"
             value={latitude}
             onChange={setLatitude}
@@ -139,6 +143,7 @@ const ModifierAmbulance: React.FC = () => {
           />
           <Field
             icon={<MapPin className="text-pink-500" />}
+            label="Longitude"
             placeholder="Longitude"
             value={longitude}
             onChange={setLongitude}
@@ -150,6 +155,7 @@ const ModifierAmbulance: React.FC = () => {
         <div className="grid grid-cols-2 gap-3">
           <Field
             icon={<Gauge className="text-blue-400" />}
+            label="Vitesse"
             placeholder="Vitesse (km/h)"
             value={vitesse}
             onChange={setVitesse}
@@ -157,6 +163,7 @@ const ModifierAmbulance: React.FC = () => {
           />
           <Field
             icon={<Fuel className="text-orange-400" />}
+            label="Carburant"
             placeholder="Carburant (ex: 70%)"
             value={carburant}
             onChange={setCarburant}
@@ -166,6 +173,7 @@ const ModifierAmbulance: React.FC = () => {
         {/* Mission */}
         <Field
           icon={<Navigation2 className="text-sky-500" />}
+          label="Mission actuelle"
           placeholder="Mission actuelle"
           value={mission}
           onChange={setMission}
@@ -174,18 +182,27 @@ const ModifierAmbulance: React.FC = () => {
         {/* Destination */}
         <Field
           icon={<Activity className="text-lime-500" />}
+          label="Destination"
           placeholder="Destination"
           value={destination}
           onChange={setDestination}
         />
 
         {/* Priorité */}
-        <div className="flex items-center gap-2">
-          <ShieldAlert className="w-5 h-5 text-red-500" />
+        <div>
+          <label
+            htmlFor="priorite"
+            className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2"
+          >
+            <ShieldAlert className="w-5 h-5 text-red-500" />
+            Niveau de priorité
+          </label>
           <select
+            id="priorite"
             value={priorite}
             onChange={(e) => setPriorite(e.target.value)}
             className="w-full px-4 py-2 rounded-lg border bg-transparent focus:ring-2 focus:ring-red-400"
+            aria-label="Niveau de priorité"
           >
             <option value="Normale">🟢 Normale</option>
             <option value="Urgente">🚨 Urgente</option>
@@ -194,16 +211,25 @@ const ModifierAmbulance: React.FC = () => {
         </div>
 
         {/* État */}
-        <div className="flex items-center gap-2">
-          <Settings className="w-5 h-5 text-yellow-500" />
+        <div>
+          <label
+            htmlFor="etat"
+            className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2"
+          >
+            <Settings className="w-5 h-5 text-yellow-500" />
+            Statut de l’ambulance
+          </label>
           <select
+            id="etat"
             value={etat}
             onChange={(e) => setEtat(e.target.value)}
             className="w-full px-4 py-2 rounded-lg border bg-transparent focus:ring-2 focus:ring-yellow-400"
+            aria-label="Statut de l’ambulance"
           >
             <option value="Disponible">🟢 Disponible</option>
             <option value="En mission">🚨 En mission</option>
             <option value="Maintenance">🛠️ Maintenance</option>
+            <option value="Hors service">❌ Hors service</option>
           </select>
         </div>
 
@@ -231,9 +257,10 @@ const ModifierAmbulance: React.FC = () => {
   );
 };
 
-// Champ réutilisable
+// 🌟 Champ réutilisable
 const Field = ({
   icon,
+  label,
   placeholder,
   value,
   onChange,
@@ -241,14 +268,17 @@ const Field = ({
   required = false,
 }: {
   icon: React.ReactNode;
+  label: string;
   placeholder: string;
   value: string;
   onChange: (v: string) => void;
   type?: string;
   required?: boolean;
 }) => (
-  <div className="flex items-center gap-2">
-    {icon}
+  <div>
+    <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+      {icon} {label}
+    </label>
     <input
       type={type}
       placeholder={placeholder}

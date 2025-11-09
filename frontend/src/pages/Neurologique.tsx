@@ -43,11 +43,12 @@ const Neurologique: React.FC = () => {
   }, [patientId]);
 
   const stressColor = useMemo(() => {
-    if (!data) return "#6366f1";
-    if (data.stress_level > 80) return "#ef4444";
-    if (data.stress_level > 60) return "#f97316";
-    return "#22c55e";
-  }, [data]);
+  if (!data || data.stress_level == null) return "#6366f1"; // 🧠 protection
+  if (data.stress_level > 80) return "#ef4444";
+  if (data.stress_level > 60) return "#f97316";
+  return "#22c55e";
+}, [data]);
+
 
   if (loading)
     return (
@@ -89,17 +90,20 @@ const Neurologique: React.FC = () => {
         </Card>
 
         {/* Stress */}
-        <Card className="p-5 shadow-lg border-l-4 border-purple-500">
-          <div className="flex items-center gap-3">
-            <Activity className="text-purple-500" />
-            <div>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Niveau de stress</p>
-              <p className="text-2xl font-bold" style={{ color: stressColor }}>
-                {(data.stress_level * 100).toFixed(1)} %
-              </p>
-            </div>
-          </div>
-        </Card>
+<Card className="p-5 shadow-lg border-l-4 border-purple-500">
+  <div className="flex items-center gap-3">
+    <Activity className="text-purple-500" />
+    <div>
+      <p className="text-sm text-gray-500 dark:text-gray-400">Niveau de stress</p>
+      <p className="text-2xl font-bold" style={{ color: stressColor }}>
+        {data?.stress_level != null
+          ? (data.stress_level * 100).toFixed(1) + " %"
+          : "Non défini"}
+      </p>
+    </div>
+  </div>
+</Card>
+
 
         {/* Anomalie */}
         <Card className="p-5 shadow-lg border-l-4 border-red-500">
@@ -116,31 +120,28 @@ const Neurologique: React.FC = () => {
       </div>
 
       {/* --- Graphique EEG --- */}
-      <Card className="p-5 bg-white/80 dark:bg-gray-900/60 shadow-lg backdrop-blur-xl">
-        <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-3 flex items-center gap-2">
-          <Sparkles className="text-indigo-500" />
-          Activité EEG — Signal cérébral
-        </h2>
-        <ResponsiveContainer width="100%" height={240}>
-          <LineChart
-            data={Array.from({ length: 30 }).map((_, i) => ({
-              time: `${i + 1}s`,
-              eeg: data.eeg + Math.sin(i / 2) * 5 + Math.random() * 3,
-            }))}
-          >
-            <XAxis dataKey="time" hide />
-            <YAxis hide />
-            <Tooltip />
-            <Line
-              type="monotone"
-              dataKey="eeg"
-              stroke={stressColor}
-              strokeWidth={2.5}
-              dot={false}
-            />
-          </LineChart>
-        </ResponsiveContainer>
-      </Card>
+<Card className="p-5 bg-white/80 dark:bg-gray-900/60 shadow-lg backdrop-blur-xl">
+  <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-3 flex items-center gap-2">
+    <Sparkles className="text-indigo-500" />
+    Activité EEG — Signal cérébral
+  </h2>
+
+  <ResponsiveContainer width="100%" height={240}>
+    <LineChart
+      data={Array.from({ length: 30 }).map((_, i) => ({
+        time: `${i + 1}s`,
+        // 🧠 Utilise une valeur par défaut 0 si data.eeg est undefined
+        eeg: (data?.eeg ?? 0) + Math.sin(i / 2) * 5 + Math.random() * 3,
+      }))}
+    >
+      <XAxis dataKey="time" stroke="#888" />
+      <YAxis stroke="#888" />
+      <Tooltip contentStyle={{ backgroundColor: "#111", border: "none" }} />
+      <Line type="monotone" dataKey="eeg" stroke="#6366f1" strokeWidth={2} dot={false} />
+    </LineChart>
+  </ResponsiveContainer>
+</Card>
+
 
       {/* --- 🧭 Schéma cérébral interactif --- */}
       <Card className="p-6 bg-white/70 dark:bg-gray-800/70 shadow-xl backdrop-blur-lg border border-gray-200/30 dark:border-gray-700/40">

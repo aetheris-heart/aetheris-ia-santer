@@ -1,29 +1,32 @@
 import React, { useEffect, useState, useMemo } from "react";
 import api from "@/components/lib/axios";
-import MetaboliqueDiagram from "@/components/diagrams/MetaboliqueDiagram";
+import MetaboliqueDiagram from "@/components/diagrams/Metaboliquediagram";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { LineChart, Line, Tooltip, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import { motion } from "framer-motion";
-import { Droplets, Flame, Activity, AlertTriangle, Sparkles } from "lucide-react";
+import { Activity, Sparkles } from "lucide-react";
 
+// 🧠 Image schéma
 const metaboliqueImage = "/assets/metabolique.png";
 
+// 🧬 Typage des données
 interface MetabolicStats {
   glucose: number | string | null;
   insuline: number | string | null;
-  niveau_risque?: string;
-  anomalies_detectees?: string;
+  niveau_risque?: string | null;
+  anomalies_detectees?: string | null;
   score_sante?: number | string | null;
   historique?: { date: string; glucose: number }[];
 }
 
-const safeNumber = (val: any, precision = 1) =>
+// 🔹 Fonction de sécurisation des nombres
+const safeNumber = (val: any, precision = 1): string =>
   typeof val === "number"
     ? val.toFixed(precision)
     : typeof val === "string" && !isNaN(parseFloat(val))
-      ? parseFloat(val).toFixed(precision)
-      : "—";
+    ? parseFloat(val).toFixed(precision)
+    : "—";
 
 const Metabolique: React.FC = () => {
   const [data, setData] = useState<MetabolicStats | null>(null);
@@ -96,7 +99,7 @@ const Metabolique: React.FC = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      {/* 🧬 Halo IA métabolique */}
+      {/* 💫 Halo IA métabolique */}
       <motion.div
         className="fixed top-0 left-0 w-[25rem] h-[25rem] rounded-full blur-3xl opacity-30 -z-10"
         style={{ background: riskColor }}
@@ -164,14 +167,14 @@ const Metabolique: React.FC = () => {
         </div>
       </motion.div>
 
-      {/* 📊 Graphique d’évolution du glucose */}
+      {/* 📊 Graphique d’évolution */}
       <CardGraph data={chartData} />
 
       {/* 🧩 Schéma métabolique dynamique */}
       <CardDiagram
-        glucose={Number(data.glucose)}
-        insuline={Number(data.insuline)}
-        niveau_risque={data.niveau_risque}
+        glucose={Number(data.glucose) || 0}
+        insuline={Number(data.insuline) || 0}
+        niveau_risque={data.niveau_risque ?? "Non défini"}
         image={metaboliqueImage}
       />
 
@@ -185,8 +188,7 @@ const Metabolique: React.FC = () => {
         <p className="text-sm opacity-90">
           Glucose {Number(data.glucose) > 110 ? "élevé" : "normal"}, insuline{" "}
           {Number(data.insuline) > 25 ? "hyperinsulinémie détectée" : "normale"}. <br />
-          État global : <strong className="text-white">{data.niveau_risque ?? "Stable"}</strong>.
-          Surveillance IA continue activée.
+          État global : <strong>{data.niveau_risque ?? "Stable"}</strong>. Surveillance IA continue activée.
         </p>
       </motion.div>
 
@@ -203,7 +205,9 @@ const Metabolique: React.FC = () => {
   );
 };
 
-// Sous-composant : graphique
+// ================================
+// 📊 Sous-composant : graphique
+// ================================
 const CardGraph: React.FC<{ data: any[] }> = ({ data }) => (
   <motion.div
     initial={{ opacity: 0 }}
@@ -225,7 +229,9 @@ const CardGraph: React.FC<{ data: any[] }> = ({ data }) => (
   </motion.div>
 );
 
-// Sous-composant : schéma + image
+// ================================
+// 🧩 Sous-composant : schéma
+// ================================
 const CardDiagram: React.FC<{
   glucose: number;
   insuline: number;
@@ -241,7 +247,12 @@ const CardDiagram: React.FC<{
       <Activity className="text-emerald-400" /> Simulation organique — Aetheris IA
     </h2>
 
-    <MetaboliqueDiagram glucose={glucose} insuline={insuline} niveauRisque={niveau_risque} />
+    <MetaboliqueDiagram
+      glucose={glucose}
+      insuline={insuline}
+      niveau_risque={niveau_risque ?? "Non défini"}
+      image={image}
+    />
 
     <div className="w-full h-52 mt-6 overflow-hidden rounded-xl">
       <img

@@ -42,6 +42,12 @@ const AjouterPatient: React.FC = () => {
     tension_diastolique: "",
     poids: "",
     taille: "",
+    etat_conscience: "", 
+    douleur: "", 
+    observation_medecin: "", 
+    observation_infirmiere: "", 
+    
+    imc: "",
     statut_clinique: "Stable",
   });
 
@@ -364,18 +370,21 @@ const AjouterPatient: React.FC = () => {
           />
 
           {/* --- OBSERVATIONS --- */}
-          <h3 className="md:col-span-2 text-xl font-bold text-indigo-400">Observations</h3>
-          <select
-            name="etat_conscience"
-            value={formData.etat_conscience}
-            onChange={handleChange}
-            className={glassInput}
-          >
-            <option value="">État de conscience</option>
-            <option value="Normal">Normal</option>
-            <option value="Somnolent">Somnolent</option>
-            <option value="Inconscient">Inconscient</option>
-          </select>
+         <label htmlFor="etat_conscience" className="text-sm text-gray-600 dark:text-gray-300">
+  État de conscience
+</label>
+<select
+  id="etat_conscience"
+  name="etat_conscience"
+  value={formData.etat_conscience}
+  onChange={handleChange}
+  className={glassInput}
+>
+  <option value="">Sélectionner...</option>
+  <option value="Normal">Normal</option>
+  <option value="Somnolent">Somnolent</option>
+  <option value="Inconscient">Inconscient</option>
+</select>
           <input
             name="douleur"
             type="number"

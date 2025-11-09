@@ -156,22 +156,28 @@ const ModifierRendezVous: React.FC = () => {
           </div>
 
           {/* Statut */}
-          <div>
-            <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
-              Statut
-            </label>
-            <select
-              name="statut"
-              value={rdv.statut}
-              onChange={handleChange}
-              className="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white/60 dark:bg-gray-800/70 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-yellow-500"
-            >
-              <option value="planifié">Planifié</option>
-              <option value="confirmé">Confirmé</option>
-              <option value="annulé">Annulé</option>
-              <option value="terminé">Terminé</option>
-            </select>
-          </div>
+<div>
+  <label
+    htmlFor="statut" // ✅ Lien explicite label ↔ select
+    className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
+  >
+    Statut
+  </label>
+
+  <select
+    id="statut" // ✅ Correspond exactement au htmlFor
+    name="statut"
+    value={rdv.statut}
+    onChange={handleChange}
+    className="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white/60 dark:bg-gray-800/70 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-yellow-500"
+  >
+    <option value="planifié">Planifié</option>
+    <option value="confirmé">Confirmé</option>
+    <option value="annulé">Annulé</option>
+    <option value="terminé">Terminé</option>
+  </select>
+</div>
+
 
           {/* Notes */}
           <div>

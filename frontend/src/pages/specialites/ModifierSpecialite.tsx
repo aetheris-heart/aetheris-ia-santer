@@ -87,31 +87,46 @@ const ModifierSpecialite: React.FC = () => {
         </div>
 
         {/* Icône */}
-        <div>
-          <label className="block text-sm font-medium mb-1">Icône</label>
-          <select
-            value={icone}
-            onChange={(e) => setIcone(e.target.value)}
-            className="w-full px-4 py-2 rounded-lg border bg-transparent focus:ring-2 focus:ring-blue-400"
-          >
-            <option value="❤️">❤️ Cardiologie</option>
-            <option value="🧠">🧠 Neurologie</option>
-            <option value="🌬️">🌬️ Pneumologie</option>
-            <option value="🦴">🦴 Orthopédie</option>
-            <option value="🩺">🩺 Autre</option>
-          </select>
-        </div>
+<div>
+  <label
+    htmlFor="icone" // ✅ relie explicitement le label au select
+    className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
+  >
+    Icône
+  </label>
 
-        {/* Couleur */}
-        <div>
-          <label className="block text-sm font-medium mb-1">Couleur</label>
-          <input
-            type="color"
-            value={couleur}
-            onChange={(e) => setCouleur(e.target.value)}
-            className="w-16 h-10 border rounded"
-          />
-        </div>
+  <select
+    id="icone" // ✅ identifiant correspondant
+    value={icone}
+    onChange={(e) => setIcone(e.target.value)}
+    aria-label="Icône de la spécialité" // ✅ nom accessible lisible par lecteur d’écran
+    className="w-full px-4 py-2 rounded-lg border bg-transparent focus:ring-2 focus:ring-blue-400 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-700"
+  >
+    <option value="❤️">❤️ Cardiologie</option>
+    <option value="🧠">🧠 Neurologie</option>
+    <option value="🌬️">🌬️ Pneumologie</option>
+    <option value="🦴">🦴 Orthopédie</option>
+    <option value="🩺">🩺 Autre</option>
+  </select>
+</div>
+
+{/* Couleur */}
+<div>
+  <label
+    htmlFor="couleur" // ✅ liaison label ↔ input color
+    className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
+  >
+    Couleur
+  </label>
+  <input
+    id="couleur"
+    type="color"
+    value={couleur}
+    onChange={(e) => setCouleur(e.target.value)}
+    className="w-16 h-10 border rounded cursor-pointer focus:ring-2 focus:ring-blue-400"
+  />
+</div>
+
 
         {/* Boutons */}
         <div className="flex gap-4">

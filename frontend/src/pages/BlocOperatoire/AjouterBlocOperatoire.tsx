@@ -160,25 +160,41 @@ const AjouterBlocOperatoire: React.FC = () => {
             className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white/10 dark:bg-gray-800/10 text-gray-900 dark:text-gray-100"
           />
 
-          <select
-            value={statut}
-            onChange={(e) => setStatut(e.target.value)}
-            className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white/10 dark:bg-gray-800/10 text-gray-900 dark:text-gray-100"
-          >
-            <option value="programmé">Programmé</option>
-            <option value="en cours">En cours</option>
-            <option value="terminé">Terminé</option>
-            <option value="annulé">Annulé</option>
-          </select>
+          {/* Statut de l’intervention */}
+<div className="mb-4">
+  <label
+    htmlFor="statut"
+    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+  >
+    Statut de l’intervention
+  </label>
+  <select
+    id="statut"
+    name="statut"
+    value={statut}
+    onChange={(e) => setStatut(e.target.value)}
+    required
+    aria-label="Statut de l’intervention"
+    title="Statut de l’intervention"
+    className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white/10 dark:bg-gray-800/10 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500"
+  >
+    <option value="programmé">Programmé</option>
+    <option value="en cours">En cours</option>
+    <option value="terminé">Terminé</option>
+    <option value="annulé">Annulé</option>
+  </select>
+</div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold shadow-lg hover:scale-105 transition disabled:opacity-50"
-          >
-            <FaSave />
-            {loading ? "Enregistrement..." : "Créer l'intervention"}
-          </button>
+{/* Bouton de validation */}
+<button
+  type="submit"
+  disabled={loading}
+  className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold shadow-lg hover:scale-105 transition disabled:opacity-50"
+>
+  <FaSave />
+  {loading ? "Enregistrement..." : "Créer l'intervention"}
+</button>
+
         </form>
       </div>
     </motion.div>

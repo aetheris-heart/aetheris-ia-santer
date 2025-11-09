@@ -88,12 +88,15 @@ const ListeMedecins = () => {
                   <p className="text-sm text-cyan-300">Spécialité : {m.specialite}</p>
                 )}
               </div>
-              <button
-                onClick={() => supprimerMedecin(m.id)}
-                className="text-red-500 hover:text-red-700"
-              >
-                <FaTrash />
-              </button>
+             <button
+  onClick={() => supprimerMedecin(m.id)}
+  aria-label={`Supprimer le médecin ${m.nom} ${m.prenom}`} // ✅ nom lisible pour lecteurs d’écran
+  title="Supprimer le médecin" // ✅ infobulle visible + nom accessible
+  className="text-red-500 hover:text-red-700 transition transform hover:scale-110"
+>
+  <FaTrash className="w-5 h-5" aria-hidden="true" />
+</button>
+
             </li>
           ))}
         </ul>

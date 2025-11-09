@@ -189,21 +189,31 @@ const ModifierHospitalisation: React.FC = () => {
           </div>
 
           {/* Statut */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Statut
-            </label>
-            <select
-              value={statut}
-              onChange={(e) => setStatut(e.target.value)}
-              className="mt-1 w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 
-              bg-white/60 dark:bg-gray-800/60 focus:ring-2 focus:ring-purple-500 outline-none"
-            >
-              <option value="en cours">En cours</option>
-              <option value="terminé">Terminé</option>
-              <option value="annulé">Annulé</option>
-            </select>
-          </div>
+<div>
+  <label
+    htmlFor="statut"
+    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+  >
+    Statut de l’hospitalisation
+  </label>
+
+  <select
+    id="statut"
+    name="statut"
+    title="Statut de l’hospitalisation"
+    aria-label="Statut de l’hospitalisation"
+    value={statut}
+    onChange={(e) => setStatut(e.target.value)}
+    required
+    className="mt-1 w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 
+    bg-white/60 dark:bg-gray-800/60 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-purple-500 outline-none"
+  >
+    <option value="en cours">🏥 En cours</option>
+    <option value="terminé">✅ Terminé</option>
+    <option value="annulé">❌ Annulé</option>
+  </select>
+</div>
+
 
           {/* Submit */}
           <button

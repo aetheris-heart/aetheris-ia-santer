@@ -112,25 +112,34 @@ const AjouterImagerie: React.FC = () => {
           </div>
 
           {/* Type Examen */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Type d’examen *
-            </label>
-            <select
-              value={typeExamen}
-              onChange={(e) => setTypeExamen(e.target.value)}
-              required
-              className="mt-1 w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 
-              bg-white/60 dark:bg-gray-800/60 focus:ring-2 focus:ring-purple-500 outline-none"
-            >
-              <option value="">-- Choisir --</option>
-              {examensDisponibles.map((exam, idx) => (
-                <option key={idx} value={exam}>
-                  {exam}
-                </option>
-              ))}
-            </select>
-          </div>
+<div>
+  <label
+    htmlFor="type_examen"
+    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+  >
+    Type d’examen *
+  </label>
+
+  <select
+    id="type_examen"
+    name="type_examen"
+    title="Type d’examen d’imagerie médicale"
+    aria-label="Type d’examen d’imagerie médicale"
+    value={typeExamen}
+    onChange={(e) => setTypeExamen(e.target.value)}
+    required
+    className="mt-1 w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 
+    bg-white/60 dark:bg-gray-800/60 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-purple-500 outline-none"
+  >
+    <option value="">-- Choisir --</option>
+    {examensDisponibles.map((exam, idx) => (
+      <option key={idx} value={exam}>
+        {exam}
+      </option>
+    ))}
+  </select>
+</div>
+
 
           {/* Autre examen */}
           {typeExamen === "Autre" && (

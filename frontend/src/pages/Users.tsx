@@ -215,16 +215,26 @@ const Users = () => {
                       <p className="text-sm text-cyan-300">Spécialité : {user.specialite}</p>
                     )}
                   </div>
-                  <div className="flex gap-3 text-white">
-                    <button
-                      onClick={() => toast.info("🔧 Fonction d’édition à venir")}
-                      className="hover:text-yellow-400"
-                    >
-                      <FaEdit />
-                    </button>
-                    <button onClick={() => supprimerUser(user.id)} className="hover:text-red-500">
-                      <FaTrash />
-                    </button>
+                 <div className="flex gap-3 text-white">
+  {/* ✏️ Bouton Éditer */}
+  <button
+    onClick={() => toast.info("🔧 Fonction d’édition à venir")}
+    aria-label="Modifier l’utilisateur"
+    title="Modifier l’utilisateur"
+    className="hover:text-yellow-400 transition transform hover:scale-110"
+  >
+    <FaEdit className="w-5 h-5" aria-hidden="true" />
+  </button>
+
+  {/* 🗑️ Bouton Supprimer */}
+  <button
+    onClick={() => supprimerUser(user.id)}
+    aria-label="Supprimer l’utilisateur"
+    title="Supprimer l’utilisateur"
+    className="hover:text-red-500 transition transform hover:scale-110"
+  >
+    <FaTrash className="w-5 h-5" aria-hidden="true" />
+  </button>
                   </div>
                 </li>
               ))}

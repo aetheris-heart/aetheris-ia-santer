@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, type ChangeEvent } from "react";
 import api from "@/components/lib/axios";
 import { useUser } from "@/context/UserContext";
 import { toast } from "react-toastify";
@@ -11,6 +11,12 @@ interface AnalyseIAResponse {
   type_analyse?: string;
   created_at: string;
 }
+interface AnalyseIAFormData {
+  patient_id: string;
+  type: string;
+  rapport: string;
+  niveau_risque: string;
+}
 
 const AnalyseIAForm: React.FC = () => {
   const { token } = useUser();
@@ -20,6 +26,12 @@ const AnalyseIAForm: React.FC = () => {
   const [score, setScore] = useState("");
   const [patientId, setPatientId] = useState("");
   const [result, setResult] = useState<AnalyseIAResponse | null>(null);
+const [formData, setFormData] = useState<AnalyseIAFormData>({
+  patient_id: "",
+  type: "",
+  rapport: "",
+  niveau_risque: "",
+});
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,6 +65,10 @@ const AnalyseIAForm: React.FC = () => {
       toast.error("❌ Erreur lors de l’analyse IA");
     }
   };
+
+  function handleChange(event: ChangeEvent<HTMLSelectElement>): void {
+    throw new Error("Function not implemented.");
+  }
 
   return (
     <div className="p-6 max-w-2xl mx-auto bg-white/30 dark:bg-gray-800/40 backdrop-blur-xl border border-white/20 rounded-2xl shadow-lg">
@@ -93,18 +109,32 @@ const AnalyseIAForm: React.FC = () => {
           onChange={(e) => setScore(e.target.value)}
         />
 
-        <select
-          className="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white/50 dark:bg-gray-900/40 backdrop-blur-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-          value={typeAnalyse}
-          onChange={(e) => setTypeAnalyse(e.target.value)}
-        >
-          <option value="cardiaque">Cardiaque</option>
-          <option value="digestive">Digestive</option>
-          <option value="pulmonaire">Pulmonaire</option>
-          <option value="neurologique">Neurologique</option>
-          <option value="rénale">Rénale</option>
-          <option value="métabolique">Métabolique</option>
-        </select>
+        <div>
+  <label
+    htmlFor="type"
+    className="block text-sm font-medium text-gray-700 mb-1"
+  >
+    Type d’analyse IA
+  </label>
+  <select
+    id="type"
+    name="type"
+    value={formData.type}
+    onChange={handleChange}
+    className="w-full px-4 py-2 rounded-lg border bg-transparent focus:ring-2 focus:ring-blue-400"
+    required
+    aria-label="Type d’analyse IA"
+  >
+    <option value="">-- Sélectionnez un type d’analyse --</option>
+    <option value="cardiaque">Cardiaque</option>
+    <option value="neurologique">Neurologique</option>
+    <option value="digestive">Digestive</option>
+    <option value="pulmonaire">Pulmonaire</option>
+    <option value="rénale">Rénale</option>
+    <option value="métabolique">Métabolique</option>
+  </select>
+</div>
+
 
         <button
           type="submit"

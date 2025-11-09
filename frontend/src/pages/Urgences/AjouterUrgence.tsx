@@ -86,166 +86,197 @@ const AjouterUrgence: React.FC = () => {
         className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md p-6 rounded-xl shadow-lg space-y-5"
       >
         {/* 🔹 Infos Patient */}
-        <div>
-          <h2 className="font-semibold text-lg text-gray-700 dark:text-gray-200 mb-3 flex items-center gap-2">
-            <User className="text-blue-500 w-5 h-5" /> Informations du patient
-          </h2>
-          <div className="grid md:grid-cols-2 gap-4">
-            <input
-              name="nom_patient"
-              placeholder="Nom"
-              value={formData.nom_patient}
-              onChange={handleChange}
-              className="input-style"
-              required
-            />
-            <input
-              name="prenom_patient"
-              placeholder="Prénom"
-              value={formData.prenom_patient}
-              onChange={handleChange}
-              className="input-style"
-            />
-            <input
-              name="age"
-              type="number"
-              placeholder="Âge"
-              value={formData.age}
-              onChange={handleChange}
-              className="input-style"
-            />
-            <select
-              name="sexe"
-              value={formData.sexe}
-              onChange={handleChange}
-              className="input-style"
-            >
-              <option value="">Sexe</option>
-              <option value="Homme">Homme</option>
-              <option value="Femme">Femme</option>
-            </select>
-          </div>
-        </div>
+<div>
+  <h2 className="font-semibold text-lg text-gray-700 dark:text-gray-200 mb-3 flex items-center gap-2">
+    <User className="text-blue-500 w-5 h-5" /> Informations du patient
+  </h2>
+  <div className="grid md:grid-cols-2 gap-4">
+    <input
+      name="nom_patient"
+      placeholder="Nom"
+      value={formData.nom_patient}
+      onChange={handleChange}
+      className="input-style"
+      required
+    />
+    <input
+      name="prenom_patient"
+      placeholder="Prénom"
+      value={formData.prenom_patient}
+      onChange={handleChange}
+      className="input-style"
+    />
+    <input
+      name="age"
+      type="number"
+      placeholder="Âge"
+      value={formData.age}
+      onChange={handleChange}
+      className="input-style"
+    />
 
-        {/* 🔹 Détails Urgence */}
-        <div>
-          <h2 className="font-semibold text-lg text-gray-700 dark:text-gray-200 mb-3 flex items-center gap-2">
-            <AlertTriangle className="text-red-500 w-5 h-5" /> Détails de l’urgence
-          </h2>
-          <div className="grid md:grid-cols-2 gap-4">
-            <input
-              name="type_urgence"
-              placeholder="Type d'urgence (Accident, Cardiaque...)"
-              value={formData.type_urgence}
-              onChange={handleChange}
-              className="input-style"
-              required
-            />
-            <select
-              name="niveau_gravite"
-              value={formData.niveau_gravite}
-              onChange={handleChange}
-              className="input-style"
-            >
-              <option>Faible</option>
-              <option>Modérée</option>
-              <option>Critique</option>
-            </select>
-            <select
-              name="statut"
-              value={formData.statut}
-              onChange={handleChange}
-              className="input-style"
-            >
-              <option>En attente</option>
-              <option>En cours</option>
-              <option>Résolue</option>
-            </select>
-            <input
-              name="equipe"
-              placeholder="Équipe d’intervention"
-              value={formData.equipe}
-              onChange={handleChange}
-              className="input-style"
-            />
-          </div>
-          <textarea
-            name="description"
-            placeholder="Description de l’urgence"
-            value={formData.description}
-            onChange={handleChange}
-            className="w-full border rounded-lg px-4 py-2 mt-3"
-            rows={3}
-          />
-        </div>
+    {/* ✅ Select Sexe avec label invisible */}
+    <label htmlFor="sexe" className="sr-only">Sexe</label>
+    <select
+      id="sexe"
+      name="sexe"
+      value={formData.sexe}
+      onChange={handleChange}
+      aria-label="Sexe du patient"
+      className="input-style"
+    >
+      <option value="">Sexe</option>
+      <option value="Homme">Homme</option>
+      <option value="Femme">Femme</option>
+    </select>
+  </div>
+</div>
 
-        {/* 🔹 Localisation & Transport */}
-        <div>
-          <h2 className="font-semibold text-lg text-gray-700 dark:text-gray-200 mb-3 flex items-center gap-2">
-            <MapPin className="text-green-500 w-5 h-5" /> Localisation & transport
-          </h2>
-          <div className="grid md:grid-cols-2 gap-4">
-            <input
-              name="lieu"
-              placeholder="Lieu de l’incident"
-              value={formData.lieu}
-              onChange={handleChange}
-              className="input-style"
-            />
-            <select
-              name="moyen_transport"
-              value={formData.moyen_transport}
-              onChange={handleChange}
-              className="input-style"
-            >
-              <option>Ambulance</option>
-              <option>Hélicoptère</option>
-              <option>Autre</option>
-            </select>
-            <input
-              name="latitude"
-              placeholder="Latitude GPS"
-              value={formData.latitude}
-              onChange={handleChange}
-              className="input-style"
-            />
-            <input
-              name="longitude"
-              placeholder="Longitude GPS"
-              value={formData.longitude}
-              onChange={handleChange}
-              className="input-style"
-            />
-          </div>
-        </div>
+{/* 🔹 Détails Urgence */}
+<div>
+  <h2 className="font-semibold text-lg text-gray-700 dark:text-gray-200 mb-3 flex items-center gap-2">
+    <AlertTriangle className="text-red-500 w-5 h-5" /> Détails de l’urgence
+  </h2>
+  <div className="grid md:grid-cols-2 gap-4">
+    <input
+      name="type_urgence"
+      placeholder="Type d'urgence (Accident, Cardiaque...)"
+      value={formData.type_urgence}
+      onChange={handleChange}
+      className="input-style"
+      required
+    />
 
-        {/* 🔹 Analyse IA */}
-        <div>
-          <h2 className="font-semibold text-lg text-gray-700 dark:text-gray-200 mb-3 flex items-center gap-2">
-            <Brain className="text-purple-500 w-5 h-5" /> Analyse IA (Aetheris)
-          </h2>
-          <div className="grid md:grid-cols-2 gap-4">
-            <select
-              name="risque_vital"
-              value={formData.risque_vital}
-              onChange={handleChange}
-              className="input-style"
-            >
-              <option value="">Risque vital</option>
-              <option value="Oui">Oui</option>
-              <option value="Non">Non</option>
-              <option value="À évaluer">À évaluer</option>
-            </select>
-            <input
-              name="patient_id"
-              type="number"
-              placeholder="ID Patient (optionnel)"
-              value={formData.patient_id}
-              onChange={handleChange}
-              className="input-style"
-            />
-          </div>
-        </div>
+    {/* ✅ Select Niveau de gravité */}
+    <label htmlFor="niveau_gravite" className="sr-only">Niveau de gravité</label>
+    <select
+      id="niveau_gravite"
+      name="niveau_gravite"
+      value={formData.niveau_gravite}
+      onChange={handleChange}
+      aria-label="Niveau de gravité"
+      className="input-style"
+    >
+      <option value="">Niveau de gravité</option>
+      <option>Faible</option>
+      <option>Modérée</option>
+      <option>Critique</option>
+    </select>
+
+    {/* ✅ Select Statut */}
+    <label htmlFor="statut" className="sr-only">Statut de l’urgence</label>
+    <select
+      id="statut"
+      name="statut"
+      value={formData.statut}
+      onChange={handleChange}
+      aria-label="Statut de l’urgence"
+      className="input-style"
+    >
+      <option>En attente</option>
+      <option>En cours</option>
+      <option>Résolue</option>
+    </select>
+
+    <input
+      name="equipe"
+      placeholder="Équipe d’intervention"
+      value={formData.equipe}
+      onChange={handleChange}
+      className="input-style"
+    />
+  </div>
+
+  <textarea
+    name="description"
+    placeholder="Description de l’urgence"
+    value={formData.description}
+    onChange={handleChange}
+    className="w-full border rounded-lg px-4 py-2 mt-3"
+    rows={3}
+  />
+</div>
+
+{/* 🔹 Localisation & Transport */}
+<div>
+  <h2 className="font-semibold text-lg text-gray-700 dark:text-gray-200 mb-3 flex items-center gap-2">
+    <MapPin className="text-green-500 w-5 h-5" /> Localisation & transport
+  </h2>
+  <div className="grid md:grid-cols-2 gap-4">
+    <input
+      name="lieu"
+      placeholder="Lieu de l’incident"
+      value={formData.lieu}
+      onChange={handleChange}
+      className="input-style"
+    />
+
+    {/* ✅ Select Moyen de transport */}
+    <label htmlFor="moyen_transport" className="sr-only">Moyen de transport</label>
+    <select
+      id="moyen_transport"
+      name="moyen_transport"
+      value={formData.moyen_transport}
+      onChange={handleChange}
+      aria-label="Moyen de transport"
+      className="input-style"
+    >
+      <option>Ambulance</option>
+      <option>Hélicoptère</option>
+      <option>Autre</option>
+    </select>
+
+    <input
+      name="latitude"
+      placeholder="Latitude GPS"
+      value={formData.latitude}
+      onChange={handleChange}
+      className="input-style"
+    />
+    <input
+      name="longitude"
+      placeholder="Longitude GPS"
+      value={formData.longitude}
+      onChange={handleChange}
+      className="input-style"
+    />
+  </div>
+</div>
+
+{/* 🔹 Analyse IA */}
+<div>
+  <h2 className="font-semibold text-lg text-gray-700 dark:text-gray-200 mb-3 flex items-center gap-2">
+    <Brain className="text-purple-500 w-5 h-5" /> Analyse IA (Aetheris)
+  </h2>
+  <div className="grid md:grid-cols-2 gap-4">
+
+    {/* ✅ Select Risque vital */}
+    <label htmlFor="risque_vital" className="sr-only">Risque vital</label>
+    <select
+      id="risque_vital"
+      name="risque_vital"
+      value={formData.risque_vital}
+      onChange={handleChange}
+      aria-label="Risque vital"
+      className="input-style"
+    >
+      <option value="">Risque vital</option>
+      <option value="Oui">Oui</option>
+      <option value="Non">Non</option>
+      <option value="À évaluer">À évaluer</option>
+    </select>
+
+    <input
+      name="patient_id"
+      type="number"
+      placeholder="ID Patient (optionnel)"
+      value={formData.patient_id}
+      onChange={handleChange}
+      className="input-style"
+    />
+  </div>
+</div>
+
 
         {/* 🔘 Bouton */}
         <button className="w-full py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg shadow-lg font-semibold transition">

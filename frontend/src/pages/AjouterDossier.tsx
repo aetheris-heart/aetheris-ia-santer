@@ -64,17 +64,24 @@ const AjouterPatient: React.FC = () => {
           className="input"
           required
         />
-        <select
-          name="sexe"
-          value={formData.sexe}
-          onChange={handleChange}
-          className="input"
-          required
-        >
-          <option value="">Sexe</option>
-          <option value="Homme">Homme</option>
-          <option value="Femme">Femme</option>
-        </select>
+        <label htmlFor="sexe" className="block text-sm font-medium text-gray-700 mb-1">
+  Sexe
+</label>
+<select
+  id="sexe"
+  name="sexe"
+  value={formData.sexe}
+  onChange={handleChange}
+  className="input"
+  required
+  aria-label="Sexe du patient"
+>
+  <option value="">-- Sélectionnez --</option>
+  <option value="Homme">Homme</option>
+  <option value="Femme">Femme</option>
+  <option value="Autre">Autre</option>
+</select>
+
         <input
           name="telephone"
           placeholder="Téléphone"

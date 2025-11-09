@@ -5,6 +5,8 @@ import { Flame, Activity, Droplet } from "lucide-react";
 interface Props {
   glucose: number;
   insuline: number;
+  niveau_risque?: string;
+   image?: string;
   niveauRisque?: string;
 }
 

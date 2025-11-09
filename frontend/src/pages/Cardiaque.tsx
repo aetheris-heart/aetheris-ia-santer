@@ -48,7 +48,7 @@ const Cardiaque: React.FC = () => {
       });
       setData(res.data);
 
-      // Mise à jour du graphique avec données aléatoires réalistes
+      // Mise à jour du graphique avec données réalistes
       setHistorique((prev) => [
         ...prev.slice(-19),
         { temps: new Date().toLocaleTimeString(), frequence: res.data.frequence_cardiaque ?? 0 },
@@ -183,9 +183,10 @@ const Cardiaque: React.FC = () => {
       {/* 🔬 Schéma interactif */}
       <Card className="p-6 backdrop-blur-2xl bg-white/10 border border-red-400/20 shadow-lg">
         <h2 className="text-xl font-semibold text-red-300 mb-4">🧬 Schéma interactif du cœur</h2>
+        {/* ✅ Correction ici : valeurs par défaut sûres */}
         <CardiaqueDiagram
-          frequence={data.frequence_cardiaque}
-          rythme={data.rythme}
+          frequence={data.frequence_cardiaque ?? 0}
+          rythme={data.rythme ?? "Inconnu"}
           alertes={data.alerte ? [data.alerte] : []}
         />
         <div className="w-full h-52 mt-6 overflow-hidden rounded-2xl">

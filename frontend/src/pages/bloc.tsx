@@ -27,10 +27,20 @@ const Bloc: React.FC = () => {
   const [selectedPatientId, setSelectedPatientId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // ✅ State local pour le filtre (statut bloc)
+  const [form, setForm] = useState({
+    statut_bloc: "",
+  });
+
+  // 🔄 Gestion du changement dans le select
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
   // 🎨 Couleurs pour graphique
   const COLORS = ["#6366F1", "#F59E0B", "#10B981"];
 
-  // 📥 Charger les blocs
+  // 📥 Charger les blocs opératoires
   const fetchBlocs = async () => {
     try {
       const res = await api.get<BlocOperatoire[]>("/bloc-operatoire", {
@@ -165,74 +175,62 @@ const Bloc: React.FC = () => {
         </Card>
       </div>
 
-      {/* 🎯 Filtrage par patient */}
-      <div className="mb-8">
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-          Filtrer par patient :
-        </label>
-        <select
-          value={selectedPatientId ?? ""}
-          onChange={(e) => setSelectedPatientId(e.target.value ? parseInt(e.target.value) : null)}
-          className="w-full md:w-1/2 p-2 border rounded-md bg-white dark:bg-gray-800 dark:text-white"
-        >
-          <option value="">Tous les patients</option>
-          {patients.map((patient) => (
-            <option key={patient.id} value={patient.id}>
-              {patient.nom} {patient.prenom}
-            </option>
-          ))}
-        </select>
-      </div>
-
       {/* 🧾 Liste des interventions */}
-      <div className="bg-white/30 dark:bg-gray-900/40 backdrop-blur-xl rounded-2xl p-6 shadow-lg border border-white/20">
-        <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">
-          Liste des interventions
-        </h2>
+<div className="bg-white/30 dark:bg-gray-900/40 backdrop-blur-xl rounded-2xl p-6 shadow-lg border border-white/20">
+  <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">
+    Liste des interventions
+  </h2>
 
-        <ul className="space-y-4">
-          {blocs
-            .filter((bloc) => !selectedPatientId || bloc.patient_id === selectedPatientId)
-            .map((bloc) => (
-              <motion.li
-                key={bloc.id}
-                whileHover={{ scale: 1.01 }}
-                className="p-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-white/40 dark:bg-gray-800/40 flex justify-between items-center"
+  <ul className="space-y-4">
+    {blocs
+      .filter(
+        (bloc) =>
+          (!selectedPatientId || bloc.patient_id === selectedPatientId) &&
+          (!form.statut_bloc || bloc.statut === form.statut_bloc)
+      )
+      .map((bloc) => (
+        <li key={bloc.id} className="list-none">
+          <motion.div
+            whileHover={{ scale: 1.01 }}
+            className="p-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-white/40 dark:bg-gray-800/40 flex justify-between items-center"
+            role="listitem"
+          >
+            <div>
+              <p className="font-bold text-lg text-gray-900 dark:text-white">
+                {bloc.type_intervention}
+              </p>
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+                {bloc.chirurgien || "Chirurgien inconnu"} —{" "}
+                <span className="capitalize">{bloc.statut}</span>
+              </p>
+            </div>
+
+            <div className="flex gap-2">
+              <UIButton
+                onClick={() => navigate(`/bloc-operatoire/${bloc.id}`)}
+                className="bg-blue-600 text-white px-3 py-1 text-sm rounded hover:bg-blue-700"
               >
-                <div>
-                  <p className="font-bold text-lg text-gray-900 dark:text-white">
-                    {bloc.type_intervention}
-                  </p>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
-                    {bloc.chirurgien || "Chirurgien inconnu"} —{" "}
-                    <span className="capitalize">{bloc.statut}</span>
-                  </p>
-                </div>
+                <FaEye className="mr-1" /> Voir
+              </UIButton>
+              <UIButton
+                onClick={() => navigate(`/bloc-operatoire/analyse/${bloc.id}`)}
+                className="bg-purple-600 text-white px-3 py-1 text-sm rounded hover:bg-purple-700"
+              >
+                <FaRobot className="mr-1" /> IA
+              </UIButton>
+              <UIButton
+                onClick={() => handleDelete(bloc.id)}
+                className="bg-red-600 text-white px-3 py-1 text-sm rounded hover:bg-red-700"
+              >
+                <FaTrash className="mr-1" /> Suppr.
+              </UIButton>
+            </div>
+          </motion.div>
+        </li>
+      ))}
+  </ul>
+</div>
 
-                <div className="flex gap-2">
-                  <UIButton
-                    onClick={() => navigate(`/bloc-operatoire/${bloc.id}`)}
-                    className="bg-blue-600 text-white px-3 py-1 text-sm rounded hover:bg-blue-700"
-                  >
-                    <FaEye className="mr-1" /> Voir
-                  </UIButton>
-                  <UIButton
-                    onClick={() => navigate(`/bloc-operatoire/analyse/${bloc.id}`)}
-                    className="bg-purple-600 text-white px-3 py-1 text-sm rounded hover:bg-purple-700"
-                  >
-                    <FaRobot className="mr-1" /> IA
-                  </UIButton>
-                  <UIButton
-                    onClick={() => handleDelete(bloc.id)}
-                    className="bg-red-600 text-white px-3 py-1 text-sm rounded hover:bg-red-700"
-                  >
-                    <FaTrash className="mr-1" /> Suppr.
-                  </UIButton>
-                </div>
-              </motion.li>
-            ))}
-        </ul>
-      </div>
     </motion.div>
   );
 };

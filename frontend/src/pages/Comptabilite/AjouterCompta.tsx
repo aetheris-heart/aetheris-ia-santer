@@ -4,13 +4,12 @@ import api from "@/components/lib/axios";
 import { useUser } from "@/context/UserContext";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
-import { FaMoneyBillWave, FaArrowLeft, FaFloppyDisk } from "react-icons/fa6"; // ✅ Correction icône
+import { FaMoneyBillWave, FaArrowLeft, FaFloppyDisk } from "react-icons/fa6";
 
 const AjouterCompta: React.FC = () => {
   const { token } = useUser();
   const navigate = useNavigate();
 
-  // ✅ Formulaire aligné avec ton schéma FinanceCreate
   const [formData, setFormData] = useState({
     type_operation: "revenu",
     categorie: "",
@@ -24,7 +23,6 @@ const AjouterCompta: React.FC = () => {
     medecin_id: "",
   });
 
-  // ✅ Gestion des champs
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
@@ -35,16 +33,13 @@ const AjouterCompta: React.FC = () => {
     }));
   };
 
-  // ✅ Soumission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      // 🔍 Conversion en nombres pour éviter le 422
       const montantHT = parseFloat(formData.montant_ht) || 0;
       const taxe = parseFloat(formData.taxe) || 0;
       const montantTotal = parseFloat(formData.montant_total) || montantHT * (1 + taxe / 100);
 
-      // 🧩 Payload envoyé au backend
       const payload = {
         type_operation: formData.type_operation,
         categorie: formData.categorie || null,
@@ -58,13 +53,9 @@ const AjouterCompta: React.FC = () => {
         medecin_id: formData.medecin_id ? parseInt(formData.medecin_id) : null,
       };
 
-      console.log("✅ Payload envoyé :", payload); // 🧠 Vérification
-
       const res = await api.post("/finance/", payload, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
-      console.log("✅ Réponse API :", res.data);
 
       toast.success("✅ Opération comptable enregistrée avec succès !");
       navigate("/comptabilite");
@@ -74,7 +65,6 @@ const AjouterCompta: React.FC = () => {
     }
   };
 
-  // 🖼️ Interface
   return (
     <div className="relative min-h-screen overflow-hidden text-white p-10 flex items-center justify-center">
       {/* 🌌 Fond dynamique */}
@@ -84,7 +74,6 @@ const AjouterCompta: React.FC = () => {
         transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
         style={{ backgroundSize: "400% 400%" }}
       />
-
       <motion.div
         className="absolute inset-0 opacity-30"
         animate={{
@@ -121,13 +110,23 @@ const AjouterCompta: React.FC = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Type d’opération */}
           <div>
-            <label className="block text-sm text-gray-300 mb-1">Type d'opération</label>
+            <label
+              htmlFor="type_operation"
+              className="block text-sm font-medium text-gray-300 mb-1"
+            >
+              Type d’opération
+            </label>
             <select
+              id="type_operation"
               name="type_operation"
+              title="Type d’opération"
+              aria-label="Type d’opération"
               value={formData.type_operation}
               onChange={handleChange}
+              required
               className="w-full p-3 rounded-lg border border-gray-700 bg-gray-800 text-white focus:ring-2 focus:ring-yellow-500"
             >
+              <option value="">-- Sélectionnez un type --</option>
               <option value="revenu">💵 Revenu</option>
               <option value="dépense">💸 Dépense</option>
             </select>
@@ -135,8 +134,14 @@ const AjouterCompta: React.FC = () => {
 
           {/* Catégorie */}
           <div>
-            <label className="block text-sm text-gray-300 mb-1">Catégorie</label>
+            <label
+              htmlFor="categorie"
+              className="block text-sm font-medium text-gray-300 mb-1"
+            >
+              Catégorie
+            </label>
             <input
+              id="categorie"
               type="text"
               name="categorie"
               value={formData.categorie}
@@ -149,8 +154,11 @@ const AjouterCompta: React.FC = () => {
           {/* Montants */}
           <div className="grid grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm text-gray-300 mb-1">Montant HT (€)</label>
+              <label htmlFor="montant_ht" className="block text-sm text-gray-300 mb-1">
+                Montant HT (€)
+              </label>
               <input
+                id="montant_ht"
                 type="number"
                 name="montant_ht"
                 value={formData.montant_ht}
@@ -160,8 +168,11 @@ const AjouterCompta: React.FC = () => {
               />
             </div>
             <div>
-              <label className="block text-sm text-gray-300 mb-1">Taxe (%)</label>
+              <label htmlFor="taxe" className="block text-sm text-gray-300 mb-1">
+                Taxe (%)
+              </label>
               <input
+                id="taxe"
                 type="number"
                 name="taxe"
                 value={formData.taxe}
@@ -170,8 +181,11 @@ const AjouterCompta: React.FC = () => {
               />
             </div>
             <div>
-              <label className="block text-sm text-gray-300 mb-1">Montant TTC (€)</label>
+              <label htmlFor="montant_total" className="block text-sm text-gray-300 mb-1">
+                Montant TTC (€)
+              </label>
               <input
+                id="montant_total"
                 type="number"
                 name="montant_total"
                 value={formData.montant_total}
@@ -184,9 +198,17 @@ const AjouterCompta: React.FC = () => {
 
           {/* Moyen de paiement */}
           <div>
-            <label className="block text-sm text-gray-300 mb-1">Moyen de paiement</label>
+            <label
+              htmlFor="moyen_paiement"
+              className="block text-sm font-medium text-gray-300 mb-1"
+            >
+              Moyen de paiement
+            </label>
             <select
+              id="moyen_paiement"
               name="moyen_paiement"
+              title="Moyen de paiement"
+              aria-label="Moyen de paiement"
               value={formData.moyen_paiement}
               onChange={handleChange}
               className="w-full p-3 rounded-lg border border-gray-700 bg-gray-800 text-white focus:ring-2 focus:ring-yellow-500"
@@ -201,8 +223,11 @@ const AjouterCompta: React.FC = () => {
 
           {/* Description */}
           <div>
-            <label className="block text-sm text-gray-300 mb-1">Description</label>
+            <label htmlFor="description" className="block text-sm text-gray-300 mb-1">
+              Description
+            </label>
             <textarea
+              id="description"
               name="description"
               value={formData.description}
               onChange={handleChange}

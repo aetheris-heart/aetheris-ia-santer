@@ -176,7 +176,7 @@ const PulmonairePatientPage: React.FC = () => {
                 animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
                 transition={{ repeat: Infinity, duration: 2 }}
               >
-                <Tooltip label={`Poumon gauche — SpO₂ : ${data.spo2}%`} />
+                <Tooltip label={`Poumon gauche — SpO₂ : ${data.spo2}%`} children={undefined} />
               </motion.div>
 
               {/* Poumon droit */}
@@ -185,7 +185,7 @@ const PulmonairePatientPage: React.FC = () => {
                 animate={{ scale: [1, 1.25, 1], opacity: [0.5, 1, 0.5] }}
                 transition={{ repeat: Infinity, duration: 2.3 }}
               >
-                <Tooltip label={`Poumon droit — Respiration : ${data.respiration_rate}/min`} />
+                <Tooltip label={`Poumon droit — Respiration : ${data.respiration_rate}/min`} children={undefined} />
               </motion.div>
 
               {/* Trachée + Bronches */}
@@ -194,7 +194,7 @@ const PulmonairePatientPage: React.FC = () => {
                 animate={{ opacity: [0.4, 0.9, 0.4] }}
                 transition={{ repeat: Infinity, duration: 3 }}
               >
-                <Tooltip label="Trachée — Conduit principal de l’air inspiré" />
+                <Tooltip label="Trachée — Conduit principal de l’air inspiré" children={undefined} />
               </motion.div>
 
               {/* Diaphragme */}
@@ -203,7 +203,7 @@ const PulmonairePatientPage: React.FC = () => {
                 animate={{ y: [0, -8, 0] }}
                 transition={{ repeat: Infinity, duration: 3 }}
               >
-                <Tooltip label="Mouvement du diaphragme (respiration)" />
+                <Tooltip label="Mouvement du diaphragme (respiration)" children={undefined} />
               </motion.div>
             </div>
 

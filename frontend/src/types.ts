@@ -92,6 +92,7 @@ export interface ConsultationIA {
 }
 
 export interface NeurologiqueData {
+  anomalies_detectees: string;
   id: number;
   patient_id: number;
   eeg?: number; // Activité électrique cérébrale
@@ -289,6 +290,8 @@ export interface Facture {
 }
 
 export interface Comptabilite {
+  montant_total: number;
+  type_operation: string;
   date_operation: string | number | Date;
   intitule: ReactNode;
   id: number;

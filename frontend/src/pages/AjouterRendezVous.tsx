@@ -137,27 +137,24 @@ const AjouterRendezVous: React.FC = () => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1">Motif du Rendez-vous</label>
-          <select
-            name="motif"
-            value={formData.motif}
-            onChange={handleChange}
-            className="w-full p-3 rounded-md border dark:bg-gray-700 dark:text-white"
-            required
-          >
-            <option value="">-- Choisir un motif --</option>
-            <option value="Consultation médicale">Consultation médicale</option>
-            <option value="Scanner">Scanner</option>
-            <option value="IRM">IRM</option>
-            <option value="Prise de sang">Prise de sang</option>
-            <option value="Radiographie">Radiographie</option>
-            <option value="ECG">ECG (Électrocardiogramme)</option>
-            <option value="Bilan de santé">Bilan de santé</option>
-            <option value="Vaccination">Vaccination</option>
-            <option value="Suivi post-opératoire">Suivi post-opératoire</option>
-
-            <option value="Autre">Autre</option>
-          </select>
+          <label htmlFor="motif" className="block text-sm font-medium text-gray-700 mb-1">
+  Motif du rendez-vous
+</label>
+<select
+  id="motif"
+  name="motif"
+  value={formData.motif}
+  onChange={handleChange}
+  className="input"
+  required
+  aria-label="Motif du rendez-vous"
+>
+  <option value="">-- Sélectionnez un motif --</option>
+  <option value="consultation">Consultation</option>
+  <option value="suivi">Suivi médical</option>
+  <option value="urgence">Urgence</option>
+  <option value="bilan">Bilan de santé</option>
+</select>
         </div>
 
         <button

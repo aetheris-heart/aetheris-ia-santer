@@ -106,25 +106,31 @@ const AjouterRadiologie: React.FC = () => {
           </div>
 
           {/* Type d’examen */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Type d’examen *
-            </label>
-            <select
-              value={typeExamen}
-              onChange={(e) => setTypeExamen(e.target.value)}
-              required
-              className="mt-1 w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 
-              bg-white/70 dark:bg-gray-800/60 focus:ring-2 focus:ring-blue-500 outline-none"
-            >
-              <option value="">-- Choisir un type d’examen --</option>
-              {examensDisponibles.map((exam, idx) => (
-                <option key={idx} value={exam}>
-                  {exam}
-                </option>
-              ))}
-            </select>
-          </div>
+<div>
+  <label
+    htmlFor="type_examen" // ✅ Association label ↔ select
+    className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+  >
+    Type d’examen *
+  </label>
+
+  <select
+    id="type_examen" // ✅ Identifiant correspondant
+    value={typeExamen}
+    onChange={(e) => setTypeExamen(e.target.value)}
+    required
+    className="mt-1 w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 
+    bg-white/70 dark:bg-gray-800/60 focus:ring-2 focus:ring-blue-500 outline-none"
+  >
+    <option value="">-- Choisir un type d’examen --</option>
+    {examensDisponibles.map((exam, idx) => (
+      <option key={idx} value={exam}>
+        {exam}
+      </option>
+    ))}
+  </select>
+</div>
+
 
           {/* URL du fichier */}
           <div>

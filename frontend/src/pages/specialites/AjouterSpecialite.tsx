@@ -70,20 +70,29 @@ const AjouterSpecialite: React.FC = () => {
         </div>
 
         {/* Icône */}
-        <div>
-          <label className="block text-sm font-medium mb-1">Icône</label>
-          <select
-            value={icone}
-            onChange={(e) => setIcone(e.target.value)}
-            className="w-full px-4 py-2 rounded-lg border bg-transparent focus:ring-2 focus:ring-indigo-400"
-          >
-            <option value="❤️">❤️ Cardiologie</option>
-            <option value="🧠">🧠 Neurologie</option>
-            <option value="🌬️">🌬️ Pneumologie</option>
-            <option value="🦴">🦴 Orthopédie</option>
-            <option value="🩺">🩺 Autre</option>
-          </select>
-        </div>
+<div>
+  <label
+    htmlFor="icone" // ✅ relie le label au select
+    className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
+  >
+    Icône
+  </label>
+
+  <select
+    id="icone" // ✅ correspond exactement au htmlFor
+    value={icone}
+    onChange={(e) => setIcone(e.target.value)}
+    aria-label="Choisir une icône pour la spécialité" // ✅ double sécurité d’accessibilité
+    className="w-full px-4 py-2 rounded-lg border bg-transparent focus:ring-2 focus:ring-indigo-400 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-700"
+  >
+    <option value="❤️">❤️ Cardiologie</option>
+    <option value="🧠">🧠 Neurologie</option>
+    <option value="🌬️">🌬️ Pneumologie</option>
+    <option value="🦴">🦴 Orthopédie</option>
+    <option value="🩺">🩺 Autre</option>
+  </select>
+</div>
+
 
         {/* Couleur */}
         <div>

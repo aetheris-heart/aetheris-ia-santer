@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useUser } from "@/context/UserContext";
 import api from "@/components/lib/axios";
-import { RadialBarChart, RadialBar, Tooltip, ResponsiveContainer, Legend } from "recharts";
+import {
+  RadialBarChart,
+  RadialBar,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+} from "recharts";
 
 // 🧠 Cartes fonctionnelles
 import CardioCard from "@/components/card/CardioCard";
@@ -55,9 +61,40 @@ const Dashboard: React.FC = () => {
   const totalPatients = patientsPerMonth.reduce((acc, p) => acc + (p.total || 0), 0);
   const totalConsultations = consultationsPerMonth.reduce((acc, c) => acc + (c.total || 0), 0);
 
-  const patientData = [{ name: "Patients", value: totalPatients, fill: "#3b82f6" }];
+  const patientData = [
+    { name: "Patients", value: Math.max(totalPatients, 1), fill: "#3b82f6" },
+  ];
+  const consultationData = [
+    { name: "Consultations", value: Math.max(totalConsultations, 1), fill: "#8b5cf6" },
+  ];
 
-  const consultationData = [{ name: "Consultations", value: totalConsultations, fill: "#8b5cf6" }];
+  const AnimatedNumber = ({ value }: { value: number }) => {
+    const [displayValue, setDisplayValue] = useState(0);
+    useEffect(() => {
+      let start = 0;
+      const duration = 800;
+      const increment = value / (duration / 16);
+      const interval = setInterval(() => {
+        start += increment;
+        if (start >= value) {
+          setDisplayValue(value);
+          clearInterval(interval);
+        } else setDisplayValue(Math.floor(start));
+      }, 16);
+      return () => clearInterval(interval);
+    }, [value]);
+    return (
+      <motion.span
+        key={value}
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.4 }}
+        className="text-4xl font-extrabold text-white drop-shadow-md"
+      >
+        {displayValue}
+      </motion.span>
+    );
+  };
 
   return (
     <motion.div
@@ -75,44 +112,66 @@ const Dashboard: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* 🩵 Patients */}
         <motion.div
-          className="p-6 bg-white/30 dark:bg-gray-900/30 backdrop-blur-xl rounded-xl shadow-xl text-center"
+          className="relative p-6 bg-white/30 dark:bg-gray-900/30 backdrop-blur-xl rounded-xl shadow-xl text-center overflow-hidden"
           initial={{ scale: 0.95, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
         >
-          <h3 className="text-lg font-semibold text-indigo-600 mb-4">👥 Évolution des patients</h3>
+          <h3 className="text-lg font-semibold text-indigo-600 mb-4">
+            👥 Évolution des patients
+          </h3>
           {loading ? (
             <p className="text-gray-400">Chargement...</p>
           ) : (
-            <ResponsiveContainer width="100%" height={250}>
-              <RadialBarChart
-                cx="50%"
-                cy="50%"
-                innerRadius="60%"
-                outerRadius="90%"
-                barSize={15}
-                data={patientData}
-              >
-                <RadialBar minAngle={15} clockWise dataKey="value" cornerRadius={20} />
-                <Legend iconSize={10} layout="vertical" verticalAlign="middle" align="right" />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "rgba(20,20,20,0.8)",
-                    borderRadius: "10px",
-                    border: "none",
-                    color: "#fff",
-                  }}
-                />
-              </RadialBarChart>
-            </ResponsiveContainer>
+            <div className="relative w-full h-64 flex items-center justify-center">
+              <ResponsiveContainer width="100%" height="100%">
+  <RadialBarChart
+    cx="50%"
+    cy="50%"
+    innerRadius="60%"
+    outerRadius="90%"
+    barSize={15}
+    data={patientData}
+    startAngle={90}
+    endAngle={-270}
+  >
+    <RadialBar
+      dataKey="value"
+      cornerRadius={20}
+      isAnimationActive
+      background
+    />
+    <Legend
+      iconSize={10}
+      layout="vertical"
+      verticalAlign="middle"
+      align="right"
+    />
+    <Tooltip
+      contentStyle={{
+        backgroundColor: "rgba(20,20,20,0.8)",
+        borderRadius: "10px",
+        border: "none",
+        color: "#fff",
+      }}
+    />
+  </RadialBarChart>
+</ResponsiveContainer>
+
+
+              {/* 🔢 Compteur central */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                <AnimatedNumber value={totalPatients} />
+                <span className="text-sm text-indigo-200 uppercase tracking-wide">
+                  patients
+                </span>
+              </div>
+            </div>
           )}
-          <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-            Total : <span className="font-semibold">{totalPatients}</span> patients
-          </p>
         </motion.div>
 
         {/* 💜 Consultations */}
         <motion.div
-          className="p-6 bg-white/30 dark:bg-gray-900/30 backdrop-blur-xl rounded-xl shadow-xl text-center"
+          className="relative p-6 bg-white/30 dark:bg-gray-900/30 backdrop-blur-xl rounded-xl shadow-xl text-center overflow-hidden"
           initial={{ scale: 0.95, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
         >
@@ -122,31 +181,51 @@ const Dashboard: React.FC = () => {
           {loading ? (
             <p className="text-gray-400">Chargement...</p>
           ) : (
-            <ResponsiveContainer width="100%" height={250}>
-              <RadialBarChart
-                cx="50%"
-                cy="50%"
-                innerRadius="60%"
-                outerRadius="90%"
-                barSize={15}
-                data={consultationData}
-              >
-                <RadialBar minAngle={15} clockWise dataKey="value" cornerRadius={20} />
-                <Legend iconSize={10} layout="vertical" verticalAlign="middle" align="right" />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "rgba(20,20,20,0.8)",
-                    borderRadius: "10px",
-                    border: "none",
-                    color: "#fff",
-                  }}
-                />
-              </RadialBarChart>
-            </ResponsiveContainer>
+            <div className="relative w-full h-64 flex items-center justify-center">
+              <ResponsiveContainer width="100%" height="100%">
+  <RadialBarChart
+    cx="50%"
+    cy="50%"
+    innerRadius="60%"
+    outerRadius="90%"
+    barSize={15}
+    data={consultationData}
+    startAngle={90}
+    endAngle={-270}
+  >
+    <RadialBar
+      dataKey="value"
+      cornerRadius={20}
+      isAnimationActive
+      background
+    />
+    <Legend
+      iconSize={10}
+      layout="vertical"
+      verticalAlign="middle"
+      align="right"
+    />
+    <Tooltip
+      contentStyle={{
+        backgroundColor: "rgba(20,20,20,0.8)",
+        borderRadius: "10px",
+        border: "none",
+        color: "#fff",
+      }}
+    />
+  </RadialBarChart>
+</ResponsiveContainer>
+
+
+              {/* 🔢 Compteur central */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                <AnimatedNumber value={totalConsultations} />
+                <span className="text-sm text-purple-200 uppercase tracking-wide">
+                  consultations
+                </span>
+              </div>
+            </div>
           )}
-          <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-            Total : <span className="font-semibold">{totalConsultations}</span> consultations
-          </p>
         </motion.div>
       </div>
 
@@ -155,19 +234,22 @@ const Dashboard: React.FC = () => {
         <SyntheseCard patientId={user?.id?.toString() || ""} />
       </div>
 
-      {/* 🩺 Fonctions vitales */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mt-6">
-        <CardioCard patientId={user?.id?.toString() || ""} />
-        <PulmonaireCard patientId={user?.id?.toString() || ""} />
-        <NeurologicalCard patientId={user?.id?.toString() || ""} />
-        <RenalCard patientId={user?.id?.toString() || ""} />
-        <DigestiveCard patientId={user?.id?.toString() || ""} />
-        <MetaboliqueCard patientId={user?.id?.toString() || ""} />
-        <BiologieAnalyseCard />
-        <SoinsCard />
-        <BlocOperatoireCard />
-        <RadiologieCard patientId={user?.id || 0} />
-      </div>
+     {/* 🩺 Fonctions vitales */}
+<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mt-6">
+  <CardioCard patientId={Number(user?.id) || 0} />
+  <PulmonaireCard patientId={Number(user?.id) || 0} />
+  <NeurologicalCard patientId={Number(user?.id) || 0} />
+  <RenalCard patientId={String(user?.id || "")} />
+
+  <DigestiveCard patientId={Number(user?.id) || 0} />
+  <MetaboliqueCard patientId={Number(user?.id) || 0} />
+  <BiologieAnalyseCard />
+  <SoinsCard />
+  <BlocOperatoireCard />
+ <RadiologieCard />
+
+</div>
+
     </motion.div>
   );
 };

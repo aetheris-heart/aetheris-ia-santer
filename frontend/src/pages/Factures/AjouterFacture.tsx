@@ -15,6 +15,7 @@ const AjouterFacture: React.FC = () => {
     patient_id: "",
     montant_ht: "",
     taxe: "",
+    type_facture: "",
     montant_total: "",
     description: "",
     statut: "en attente",
@@ -166,19 +167,30 @@ const AjouterFacture: React.FC = () => {
           className="w-full mb-4 p-3 rounded-lg border border-gray-700 bg-gray-700 text-gray-300 cursor-not-allowed"
         />
 
-        {/* 🔹 Statut */}
-        <label className="block text-sm mb-1">Statut</label>
-        <select
-          name="statut"
-          value={formData.statut}
-          onChange={handleChange}
-          className="w-full mb-4 p-3 rounded-lg border border-gray-700 bg-gray-800 text-white focus:ring-2 focus:ring-yellow-500"
-        >
-          <option value="en attente">En attente</option>
-          <option value="payée">Payée</option>
-          <option value="partiel">Partiel</option>
-          <option value="annulée">Annulée</option>
-        </select>
+        <label
+  htmlFor="type_facture"
+  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+>
+  Type de facture
+</label>
+
+<select
+  id="type_facture"
+  name="type_facture"
+  title="Type de facture"
+  aria-label="Type de facture"
+  value={formData.type_facture}
+  onChange={handleChange}
+  required
+  className="w-full p-3 rounded-lg border border-gray-700 bg-gray-800 text-white focus:ring-2 focus:ring-yellow-500"
+>
+  <option value="">-- Sélectionner --</option>
+  <option value="consultation">Consultation</option>
+  <option value="hospitalisation">Hospitalisation</option>
+  <option value="analyse">Analyse</option>
+  <option value="autre">Autre</option>
+</select>
+
 
         {/* 🔹 Description */}
         <label className="block text-sm mb-1">Description</label>

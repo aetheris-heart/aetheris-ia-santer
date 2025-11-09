@@ -97,25 +97,31 @@ const AjouterRendezVous: React.FC = () => {
 
         <form onSubmit={handleSubmit} className="space-y-5">
           {/* Patient */}
-          <div>
-            <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
-              Patient concerné
-            </label>
-            <select
-              name="patient_id"
-              value={formData.patient_id}
-              onChange={handleChange}
-              required
-              className="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white/60 dark:bg-gray-800/70 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-yellow-500 transition"
-            >
-              <option value="">-- Sélectionner un patient --</option>
-              {patients.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.nom} {p.prenom}
-                </option>
-              ))}
-            </select>
-          </div>
+<div>
+  <label
+    htmlFor="patient_id" // ✅ Association explicite label ↔ select
+    className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
+  >
+    Patient concerné
+  </label>
+
+  <select
+    id="patient_id" // ✅ correspond exactement au htmlFor
+    name="patient_id"
+    value={formData.patient_id}
+    onChange={handleChange}
+    required
+    className="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white/60 dark:bg-gray-800/70 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-yellow-500 transition"
+  >
+    <option value="">-- Sélectionner un patient --</option>
+    {patients.map((p) => (
+      <option key={p.id} value={p.id}>
+        {p.nom} {p.prenom}
+      </option>
+    ))}
+  </select>
+</div>
+
 
           {/* Motif */}
           <div>

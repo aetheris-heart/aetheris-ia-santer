@@ -84,7 +84,10 @@ const MetaboliquePatientCritique: React.FC = () => {
           <Card className="md:col-span-2">
             <CardContent>
               <h3 className="text-xl font-semibold mb-4">Schéma Interactif Métabolique</h3>
-              <MetaboliqueDiagram glucose={data.glucose} insulin={data.insulin} />
+             <MetaboliqueDiagram glucose={data.glucose} insuline={data.insulin} />
+
+
+
             </CardContent>
           </Card>
         </div>

@@ -52,8 +52,8 @@ const AnalyseBloc: React.FC = () => {
         (analyse.risque_postop ?? 22) > 75
           ? "#ef4444"
           : (analyse.risque_postop ?? 22) > 50
-            ? "#facc15"
-            : "#22c55e",
+          ? "#facc15"
+          : "#22c55e",
     },
   ];
 
@@ -92,7 +92,7 @@ const AnalyseBloc: React.FC = () => {
                 {analyse.complications.length > 0 ? (
                   analyse.complications.map((c, i) => <li key={i}>{c}</li>)
                 ) : (
-                  <p className="text-gray-400">Aucune complication détectée</p>
+                   <li className="text-gray-400 list-none">Aucune complication détectée</li>
                 )}
               </ul>
             </CardContent>
@@ -119,20 +119,18 @@ const AnalyseBloc: React.FC = () => {
                     outerRadius="100%"
                     barSize={12}
                     data={dataRisque}
+                    startAngle={90}
+                    endAngle={-270}
                   >
-                    <RadialBar
-                      minAngle={15}
-                      background
-                      clockWise
-                      dataKey="value"
-                      cornerRadius={10}
-                    />
+                    <RadialBar dataKey="value" cornerRadius={20} isAnimationActive={true} />
                     <Tooltip />
                   </RadialBarChart>
                 </ResponsiveContainer>
                 <p className="mt-2 text-sm text-gray-300">
                   Niveau IA :{" "}
-                  <span className="font-bold text-pink-400">{analyse.risque_postop ?? 22}%</span>
+                  <span className="font-bold text-pink-400">
+                    {analyse.risque_postop ?? 22}%
+                  </span>
                 </p>
               </div>
             </CardContent>
@@ -155,7 +153,7 @@ const AnalyseBloc: React.FC = () => {
                 {analyse.recommandations.length > 0 ? (
                   analyse.recommandations.map((r, i) => <li key={i}>{r}</li>)
                 ) : (
-                  <p className="text-gray-400">Aucune recommandation particulière</p>
+                  <li className="text-gray-400 list-none">Aucune recommandation particulière</li>
                 )}
               </ul>
             </CardContent>

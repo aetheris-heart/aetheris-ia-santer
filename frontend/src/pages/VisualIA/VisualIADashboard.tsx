@@ -47,13 +47,21 @@ const VisualIADashboard: React.FC = () => {
     fetchVisualData();
   }, [token]);
 
-  // 📊 Données statistiques
-  const totalAnalyses = data.length;
-  const anomalies = data.filter((d) =>
-    /suspicion|anomalie|fracture|masse/i.test(d.diagnostic)
-  ).length;
-  const tauxConfianceMoyen = (Math.random() * 15 + 85).toFixed(2);
-  const dernierUpdate = data.length ? new Date(data[0].date).toLocaleString() : "—";
+ // 📊 Données statistiques
+const totalAnalyses = data?.length ?? 0;
+
+const anomalies = data?.filter((d) =>
+  /suspicion|anomalie|fracture|masse/i.test(d?.diagnostic ?? "")
+).length ?? 0;
+
+const tauxConfianceMoyen = (Math.random() * 15 + 85).toFixed(2);
+
+// ✅ Vérification sécurisée avant d’accéder à date
+const dernierUpdate =
+  data && data.length > 0 && data[0]?.date
+    ? new Date(data[0].date).toLocaleString()
+    : "—";
+
 
   // 📈 Préparation graphique : nombre d’analyses par domaine
   const chartByDomaine = Object.values(

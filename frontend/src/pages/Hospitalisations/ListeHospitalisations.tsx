@@ -25,7 +25,7 @@ const ListeHospitalisations: React.FC = () => {
   const [hospitalisations, setHospitalisations] = useState<Hospitalisation[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // 📥 Charger hospitalisations
+  // 📥 Charger les hospitalisations
   useEffect(() => {
     if (!token) return;
     api
@@ -37,7 +37,7 @@ const ListeHospitalisations: React.FC = () => {
       .finally(() => setLoading(false));
   }, [token]);
 
-  // 🗑️ Supprimer
+  // 🗑️ Supprimer une hospitalisation
   const handleDelete = async (id: number) => {
     if (!window.confirm("❌ Supprimer cette hospitalisation ?")) return;
     try {
@@ -45,28 +45,30 @@ const ListeHospitalisations: React.FC = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       setHospitalisations((prev) => prev.filter((h) => h.id !== id));
-      toast.success("✅ Hospitalisation supprimée");
+      toast.success("✅ Hospitalisation supprimée avec succès");
     } catch {
-      toast.error("❌ Échec suppression hospitalisation");
+      toast.error("❌ Échec lors de la suppression");
     }
   };
 
   return (
     <div className="p-8 min-h-screen bg-transparent backdrop-blur-md">
-      {/* Header */}
+      {/* 🏥 En-tête */}
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white flex items-center gap-2">
           <FaHospitalUser className="text-purple-500" /> Hospitalisations
         </h1>
         <button
           onClick={() => navigate("/hospitalisations/ajouter")}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow hover:scale-105 transition"
+          title="Ajouter une hospitalisation"
+          aria-label="Ajouter une hospitalisation"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow hover:scale-105 transition focus:ring-2 focus:ring-green-400"
         >
-          <FaPlusCircle /> Nouvelle Hospitalisation
+          <FaPlusCircle aria-hidden="true" /> Nouvelle Hospitalisation
         </button>
       </div>
 
-      {/* Table */}
+      {/* 📋 Tableau principal */}
       {loading ? (
         <p className="text-gray-500">⏳ Chargement...</p>
       ) : hospitalisations.length === 0 ? (
@@ -108,24 +110,37 @@ const ListeHospitalisations: React.FC = () => {
                   <td className="p-3">
                     {h.date_sortie ? new Date(h.date_sortie).toLocaleString() : "—"}
                   </td>
+
+                  {/* 🎛️ Boutons d’action accessibles */}
                   <td className="p-3 flex justify-center gap-3">
+                    {/* 👁️ Voir */}
                     <button
                       onClick={() => navigate(`/hospitalisations/${h.id}`)}
-                      className="text-blue-500 hover:scale-110 transition"
+                      title="Voir les détails de l’hospitalisation"
+                      aria-label="Voir les détails de l’hospitalisation"
+                      className="text-blue-500 hover:scale-110 transition p-2 rounded-lg hover:bg-blue-500/10 focus:ring-2 focus:ring-blue-400"
                     >
-                      <FaEye />
+                      <FaEye aria-hidden="true" />
                     </button>
+
+                    {/* ✏️ Modifier */}
                     <button
                       onClick={() => navigate(`/hospitalisations/modifier/${h.id}`)}
-                      className="text-yellow-500 hover:scale-110 transition"
+                      title="Modifier cette hospitalisation"
+                      aria-label="Modifier cette hospitalisation"
+                      className="text-yellow-500 hover:scale-110 transition p-2 rounded-lg hover:bg-yellow-500/10 focus:ring-2 focus:ring-yellow-400"
                     >
-                      <FaEdit />
+                      <FaEdit aria-hidden="true" />
                     </button>
+
+                    {/* 🗑️ Supprimer */}
                     <button
                       onClick={() => handleDelete(h.id)}
-                      className="text-red-500 hover:scale-110 transition"
+                      title="Supprimer cette hospitalisation"
+                      aria-label="Supprimer cette hospitalisation"
+                      className="text-red-500 hover:scale-110 transition p-2 rounded-lg hover:bg-red-500/10 focus:ring-2 focus:ring-red-400"
                     >
-                      <FaTrash />
+                      <FaTrash aria-hidden="true" />
                     </button>
                   </td>
                 </tr>

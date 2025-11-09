@@ -96,7 +96,7 @@ const ModifierBlocOperatoire: React.FC = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      toast.success("✅ Intervention mise à jour");
+      toast.success("✅ Intervention mise à jour !");
       navigate(`/bloc-operatoire/${res.data.id}`);
     } catch (err: any) {
       console.error("ModifierBlocOperatoire PUT error:", err);
@@ -126,11 +126,13 @@ const ModifierBlocOperatoire: React.FC = () => {
           <FaUserMd /> Modifier Intervention #{id}
         </h1>
 
+        {/* ✅ Formulaire principal */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="number"
             value={patientId}
             onChange={(e) => setPatientId(e.target.value === "" ? "" : Number(e.target.value))}
+            placeholder="ID patient"
             required
             className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white/10 dark:bg-gray-800/10 text-gray-900 dark:text-gray-100"
           />
@@ -139,6 +141,7 @@ const ModifierBlocOperatoire: React.FC = () => {
             type="text"
             value={typeIntervention}
             onChange={(e) => setTypeIntervention(e.target.value)}
+            placeholder="Type d’intervention"
             required
             className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white/10 dark:bg-gray-800/10 text-gray-900 dark:text-gray-100"
           />
@@ -147,40 +150,29 @@ const ModifierBlocOperatoire: React.FC = () => {
             type="text"
             value={chirurgien}
             onChange={(e) => setChirurgien(e.target.value)}
+            placeholder="Chirurgien"
             required
             className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white/10 dark:bg-gray-800/10 text-gray-900 dark:text-gray-100"
           />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input
-              type="text"
-              value={assistant1}
-              onChange={(e) => setAssistant1(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white/10 dark:bg-gray-800/10 text-gray-900 dark:text-gray-100"
-              placeholder="Assistant 1"
-            />
-            <input
-              type="text"
-              value={assistant2}
-              onChange={(e) => setAssistant2(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white/10 dark:bg-gray-800/10 text-gray-900 dark:text-gray-100"
-              placeholder="Assistant 2"
-            />
-            <input
-              type="text"
-              value={assistant3}
-              onChange={(e) => setAssistant3(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white/10 dark:bg-gray-800/10 text-gray-900 dark:text-gray-100"
-              placeholder="Assistant 3"
-            />
-            <input
-              type="text"
-              value={assistant4}
-              onChange={(e) => setAssistant4(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white/10 dark:bg-gray-800/10 text-gray-900 dark:text-gray-100"
-              placeholder="Assistant 4"
-            />
-          </div>
+          {/* Assistants */}
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+  {[assistant1, assistant2, assistant3, assistant4].map((val, i) => (
+    <input
+      key={i}
+      type="text"
+      value={val}
+      onChange={(e) => {
+        const setters = [setAssistant1, setAssistant2, setAssistant3, setAssistant4];
+        const setter = setters[i];
+        if (setter) setter(e.target.value); // ✅ évite l’erreur TS2722
+      }}
+      placeholder={`Assistant ${i + 1}`}
+      className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white/10 dark:bg-gray-800/10 text-gray-900 dark:text-gray-100"
+    />
+  ))}
+</div>
+
 
           <input
             type="datetime-local"
@@ -205,21 +197,33 @@ const ModifierBlocOperatoire: React.FC = () => {
             className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white/10 dark:bg-gray-800/10 text-gray-900 dark:text-gray-100"
           />
 
+          {/* ✅ Statut de l’intervention */}
+          <label
+            htmlFor="statut"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+          >
+            Statut de l’intervention
+          </label>
           <select
+            id="statut"
+            name="statut"
+            title="Statut de l’intervention"
             value={statut}
             onChange={(e) => setStatut(e.target.value)}
-            className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white/10 dark:bg-gray-800/10 text-gray-900 dark:text-gray-100"
+            className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white/10 dark:bg-gray-800/10 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-yellow-400"
+            required
+            aria-label="Statut de l’intervention"
           >
-            <option value="programmé">Programmé</option>
-            <option value="en cours">En cours</option>
-            <option value="terminé">Terminé</option>
-            <option value="annulé">Annulé</option>
+            <option value="programmé">🗓️ Programmé</option>
+            <option value="en cours">⚙️ En cours</option>
+            <option value="terminé">✅ Terminé</option>
+            <option value="annulé">❌ Annulé</option>
           </select>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-gradient-to-r from-yellow-500 to-orange-600 text-white font-semibold shadow-lg hover:scale-105 transition disabled:opacity-50"
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-gradient-to-r from-yellow-500 to-orange-600 text-white font-semibold shadow-lg hover:scale-105 transition disabled:opacity-50 mt-4"
           >
             <FaSave />
             {loading ? "Enregistrement..." : "Mettre à jour"}

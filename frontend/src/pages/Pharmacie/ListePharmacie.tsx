@@ -65,70 +65,92 @@ const ListePharmacie: React.FC = () => {
       </div>
 
       {/* Table */}
-      {loading ? (
-        <p className="text-gray-500">⏳ Chargement...</p>
-      ) : medicaments.length === 0 ? (
-        <p className="text-gray-500 italic">Aucun médicament trouvé.</p>
-      ) : (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="overflow-x-auto"
-        >
-          <table className="w-full border-collapse bg-white/20 dark:bg-gray-900/30 backdrop-blur-xl border border-white/20 rounded-xl shadow-lg">
-            <thead>
-              <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
-                <th className="p-3 text-left">Nom</th>
-                <th className="p-3 text-left">Forme</th>
-                <th className="p-3 text-left">Dosage</th>
-                <th className="p-3 text-left">Quantité</th>
-                <th className="p-3 text-left">Statut</th>
-                <th className="p-3 text-left">Péremption</th>
-                <th className="p-3 text-center">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {medicaments.map((m) => (
-                <tr
-                  key={m.id}
-                  className="border-b border-gray-300 dark:border-gray-700 hover:bg-white/40 dark:hover:bg-gray-800/40 transition"
-                >
-                  <td className="p-3">{m.nom}</td>
-                  <td className="p-3">{m.forme}</td>
-                  <td className="p-3">{m.dosage || "—"}</td>
-                  <td className="p-3">{m.quantite}</td>
-                  <td
-                    className={`p-3 ${m.statut === "Rupture" ? "text-red-500" : "text-green-500"}`}
-                  >
-                    {m.statut}
-                  </td>
-                  <td className="p-3">
-                    {m.date_peremption ? new Date(m.date_peremption).toLocaleDateString() : "—"}
-                  </td>
-                  <td className="p-3 flex justify-center gap-3">
-                    <button
-                      onClick={() => navigate(`/pharmacie/modifier/${m.id}`)}
-                      className="text-yellow-500 hover:scale-110 transition"
-                    >
-                      <FaEdit />
-                    </button>
-                    <button
-                      onClick={() => handleDelete(m.id)}
-                      className="text-red-500 hover:scale-110 transition"
-                    >
-                      <FaTrash />
-                    </button>
-                    {m.quantite <= m.seuil_alerte && (
-                      <FaExclamationTriangle className="text-orange-500 animate-pulse" />
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </motion.div>
-      )}
+{loading ? (
+  <p className="text-gray-500">⏳ Chargement...</p>
+) : medicaments.length === 0 ? (
+  <p className="text-gray-500 italic">Aucun médicament trouvé.</p>
+) : (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5 }}
+    className="overflow-x-auto"
+  >
+    <table className="w-full border-collapse bg-white/20 dark:bg-gray-900/30 backdrop-blur-xl border border-white/20 rounded-xl shadow-lg">
+      <thead>
+        <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
+          <th className="p-3 text-left">Nom</th>
+          <th className="p-3 text-left">Forme</th>
+          <th className="p-3 text-left">Dosage</th>
+          <th className="p-3 text-left">Quantité</th>
+          <th className="p-3 text-left">Statut</th>
+          <th className="p-3 text-left">Péremption</th>
+          <th className="p-3 text-center">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {medicaments.map((m) => (
+          <tr
+            key={m.id}
+            className="border-b border-gray-300 dark:border-gray-700 hover:bg-white/40 dark:hover:bg-gray-800/40 transition"
+          >
+            <td className="p-3">{m.nom}</td>
+            <td className="p-3">{m.forme}</td>
+            <td className="p-3">{m.dosage || "—"}</td>
+            <td className="p-3">{m.quantite}</td>
+            <td
+              className={`p-3 ${
+                m.statut === "Rupture" ? "text-red-500" : "text-green-500"
+              }`}
+            >
+              {m.statut}
+            </td>
+            <td className="p-3">
+              {m.date_peremption
+                ? new Date(m.date_peremption).toLocaleDateString()
+                : "—"}
+            </td>
+
+            {/* Actions */}
+            <td className="p-3 flex justify-center gap-3">
+              {/* ✏️ Modifier */}
+              <button
+                onClick={() => navigate(`/pharmacie/modifier/${m.id}`)}
+                aria-label={`Modifier le médicament ${m.nom}`}
+                title={`Modifier ${m.nom}`}
+                className="text-yellow-500 hover:scale-110 transition transform"
+              >
+                <FaEdit aria-hidden="true" />
+              </button>
+
+              {/* 🗑️ Supprimer */}
+              <button
+                onClick={() => handleDelete(m.id)}
+                aria-label={`Supprimer le médicament ${m.nom}`}
+                title={`Supprimer ${m.nom}`}
+                className="text-red-500 hover:scale-110 transition transform"
+              >
+                <FaTrash aria-hidden="true" />
+              </button>
+
+              {/* ⚠️ Alerte de seuil */}
+              {m.quantite <= m.seuil_alerte && (
+                <FaExclamationTriangle
+                  className="text-orange-500 animate-pulse"
+                  aria-label="Seuil critique atteint"
+                  title="Seuil critique atteint"
+                />
+              )}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </motion.div>
+)}
+
+      
     </motion.div>
   );
 };

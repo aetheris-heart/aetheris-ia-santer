@@ -91,23 +91,31 @@ const ListeImageries: React.FC = () => {
                   <td className="p-3">{new Date(i.date_examen).toLocaleString()}</td>
                   <td className="p-3 flex justify-center gap-3">
                     <button
-                      onClick={() => navigate(`/imageries/${i.id}`)}
-                      className="text-blue-500 hover:scale-110 transition"
-                    >
-                      <FaEye />
-                    </button>
-                    <button
-                      onClick={() => navigate(`/imageries/modifier/${i.id}`)}
-                      className="text-yellow-500 hover:scale-110 transition"
-                    >
-                      <FaEdit />
-                    </button>
-                    <button
-                      onClick={() => handleDelete(i.id)}
-                      className="text-red-500 hover:scale-110 transition"
-                    >
-                      <FaTrash />
-                    </button>
+  onClick={() => navigate(`/imageries/${i.id}`)}
+  title="Voir les détails de l’imagerie"
+  aria-label="Voir les détails de l’imagerie"
+  className="text-blue-500 hover:scale-110 transition p-2 rounded-lg hover:bg-blue-500/10 focus:ring-2 focus:ring-blue-400"
+>
+  <FaEye aria-hidden="true" />
+</button>
+
+<button
+  onClick={() => navigate(`/imageries/modifier/${i.id}`)}
+  title="Modifier cette imagerie"
+  aria-label="Modifier cette imagerie"
+  className="text-yellow-500 hover:scale-110 transition p-2 rounded-lg hover:bg-yellow-500/10 focus:ring-2 focus:ring-yellow-400"
+>
+  <FaEdit aria-hidden="true" />
+</button>
+
+<button
+  onClick={() => handleDelete(i.id)}
+  title="Supprimer cette imagerie"
+  aria-label="Supprimer cette imagerie"
+  className="text-red-500 hover:scale-110 transition p-2 rounded-lg hover:bg-red-500/10 focus:ring-2 focus:ring-red-400"
+>
+  <FaTrash aria-hidden="true" />
+</button>
                   </td>
                 </tr>
               ))}
