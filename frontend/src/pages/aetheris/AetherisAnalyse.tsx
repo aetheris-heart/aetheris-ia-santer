@@ -61,7 +61,7 @@ const AetherisAnalyse: React.FC = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
         setHistorique(histoRes.data);
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error("Erreur Aetheris Analyse :", err);
         toast.error("❌ Impossible de charger ou générer l’analyse Aetheris IA du patient.");
       } finally {

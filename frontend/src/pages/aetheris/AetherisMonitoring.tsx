@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Activity, HeartPulse, Cpu } from "lucide-react";
+import { Activity } from "lucide-react";
 import api from "@/components/lib/axios";
 import { useUser } from "@/context/UserContext";
 
 const AetherisMonitoring: React.FC = () => {
   const { token } = useUser();
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<unknown>(null);
 
   useEffect(() => {
     const fetchMonitoring = async () => {
